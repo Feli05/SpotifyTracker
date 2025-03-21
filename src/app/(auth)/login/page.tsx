@@ -1,76 +1,111 @@
 "use client";
-import React, { useState } from "react";
+
+import React, { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { Button, Input } from "@heroui/react";
+import { LoginSchema } from "../../../helpers/schemas";
+import { LoginFormType } from "../../../helpers/types";
+import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  
+  // State for input values
+  const [values, setValues] = useState<LoginFormType>({
+    email: "",
+    password: "",
+  });
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
+  // State for form errors
+  const [errors, setErrors] = useState<Partial<Record<keyof LoginFormType, string>>>({});
 
+  // Function to handle form submission
+  const handleLogin = useCallback(async (values: LoginFormType) => {
     try {
       // POST to /api/login route with only required credentials
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: values.email, password: values.password }),
       });
 
-      const data = await res.json();
-
       // If server returned an error
-      if (!res.ok) {
-        setError(data.error || "Login failed");
-        return;
-      }
+      if (!res.ok) return;
 
       // If success, redirect to /dashboard
       router.push("/dashboard");
     } catch (err) {
-      setError("An unexpected error occurred");
-    } finally {
-      setIsLoading(false);
+      console.error(err);
+    }
+  }, [router]);
+
+  // Validate and submit the form
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      // Validate form values; abortEarly:false to catch all errors.
+      await LoginSchema.validate(values, { abortEarly: false });
+      setErrors({});
+      await handleLogin(values);
+    } catch (validationError: any) {
+      // Convert validation errors into an object with field names as keys
+      if (validationError.inner) {
+        const formErrors: Partial<Record<keyof LoginFormType, string>> = {};
+        validationError.inner.forEach((error: any) => {
+          if (error.path) {
+            formErrors[error.path as keyof LoginFormType] = error.message;
+          }
+        });
+        setErrors(formErrors);
+      }
     }
   };
 
+  // Update state for input changes
+  const handleChange = (field: keyof LoginFormType) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, [field]: e.target.value });
+  };
+
   return (
-    <div style={{ maxWidth: "400px", margin: "auto", padding: "1rem" }}>
-      <h1>Login</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Email</label>
-          <br />
-          <input
+    <>
+      <div className="text-center text-[25px] font-bold mb-6">Login</div>
+      <form onSubmit={handleSubmit} className="flex flex-col w-full items-center">
+        <div className="flex flex-col w-1/2 gap-4 mb-4">
+          <Input
+            variant="bordered"
+            label="Email"
+            name="email"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+            value={values.email}
+            isInvalid={!!errors.email}
+            errorMessage={errors.email}
+            onChange={handleChange("email")}
+            isRequired
           />
-        </div>
-
-        <div>
-          <label>Password</label>
-          <br />
-          <input
+          <Input
+            variant="bordered"
+            label="Password"
+            name="password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
+            value={values.password}
+            isInvalid={!!errors.password}
+            errorMessage={errors.password}
+            onChange={handleChange("password")}
+            isRequired
           />
         </div>
 
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? "Logging in..." : "Log In"}
-        </button>
+          <Button type="submit" variant="flat" color="primary">
+            Login
+          </Button>   
       </form>
-    </div>
+
+      <div className="font-light text-slate-400 mt-4 text-sm">
+        Don&apos;t have an account ?{" "}
+        <Link href="/register" className="font-bold">
+          Register here
+        </Link>
+      </div>
+    </>
   );
 }
