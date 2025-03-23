@@ -35,16 +35,15 @@ export const AuthLayoutWrapper = ({ children }: Props) => {
         </div>
 
         <div className='z-10'>
-          <h1 className='font-bold text-[45px]'>NextUI Dashboard Template</h1>
+          <h1 className='font-bold text-[45px]'>Welcome to Spotify Tracker</h1>
           <div className='font-light text-slate-400 mt-4'>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi
-            possimus voluptate, sapiente assumenda deserunt repellendus,
-            perferendis odit voluptas hic dolores laborum fugit ut? Architecto
-            quo ex quidem vitae quae rem.
+            Track your Spotify listening habits and discover insights about your
+            music taste. See your top artists, songs, and genres over different
+            time periods. Get personalized statistics and visualizations of your
+            listening history.
           </div>
         </div>
       </div>
     </div>
   );
 };
-

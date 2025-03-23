@@ -69,7 +69,7 @@ export default function LoginPage() {
   return (
     <>
       <div className="text-center text-[25px] font-bold mb-6">Login</div>
-      <form onSubmit={handleSubmit} className="flex flex-col w-full items-center">
+      <form onSubmit={handleSubmit} className="flex flex-col w-full items-center" noValidate>
         <div className="flex flex-col w-1/2 gap-4 mb-4">
           <Input
             variant="bordered"
@@ -81,6 +81,7 @@ export default function LoginPage() {
             errorMessage={errors.email}
             onChange={handleChange("email")}
             isRequired
+            autoComplete="email"
           />
           <Input
             variant="bordered"
@@ -92,6 +93,7 @@ export default function LoginPage() {
             errorMessage={errors.password}
             onChange={handleChange("password")}
             isRequired
+            autoComplete="current-password"
           />
         </div>
 

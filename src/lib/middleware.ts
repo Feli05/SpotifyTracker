@@ -16,20 +16,21 @@ export async function updateSession(request: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll() {
-          return request.cookies.getAll();
+        get(name: string) {
+          return request.cookies.get(name)?.value;
         },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            // Update the request's cookies
-            request.cookies.set(name, value);
-
-            // Update the response cookies so they reach the client
-            response.cookies.set(name, value, options);
+        set(name: string, value: string, options: CookieOptions) {
+          // Update the response cookies so they reach the client
+          response.cookies.set(name, value, options);
+        },
+        remove(name: string, options: CookieOptions) {
+          response.cookies.set(name, '', {
+            ...options,
+            expires: new Date(0),
           });
         },
       },
-    },
+    }
   );
 
   // Attempt to refresh session or retrieve user

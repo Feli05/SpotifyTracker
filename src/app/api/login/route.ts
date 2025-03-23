@@ -1,8 +1,14 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextRequest, NextResponse } from "next/server";
+import { CookieOptions } from "@supabase/ssr";
 
 export async function POST(request: NextRequest) {
-  let response = new NextResponse(null, { status: 200 });
+  // Create a response object first
+  let response = NextResponse.json(
+    { success: true },
+    { status: 200 }
+  );
+  
   const { email, password } = await request.json();
 
   const supabase = createServerClient(
@@ -10,16 +16,17 @@ export async function POST(request: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll() {
-          return request.cookies.getAll();
+        get(name: string) {
+          return request.cookies.get(name)?.value;
         },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            request.cookies.set(name, value);
-            response.cookies.set(name, value, {
-              ...options,
-              secure: false, // false for local development, true for production
-            });
+        set(name: string, value: string, options: CookieOptions) {
+          // Set cookies on the response object
+          response.cookies.set(name, value, options);
+        },
+        remove(name: string, options: CookieOptions) {
+          response.cookies.set(name, '', {
+            ...options,
+            expires: new Date(0),
           });
         },
       },
@@ -40,9 +47,6 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // On success 
-  return NextResponse.json(
-    { success: true },
-    { status: 200 }
-  );
+  // On success return the response with cookies set
+  return response;
 }
