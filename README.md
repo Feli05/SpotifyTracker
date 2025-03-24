@@ -1,3 +1,5 @@
+to install packages: npm install --legacy-prop-deps
+
 # **Spotify Tracker**
 
 **Spotify Tracker** is a web app that focuses on **music recommendations** using machine learning and reinforcement learning techniques. The app provides personalized music suggestions, monthly recaps of listening habits, and detailed insights about top artists and tracks. Users can get AI-powered recommendations based on their preferences and discover new music that matches their taste.
