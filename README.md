@@ -1,4 +1,4 @@
-to install packages: npm install --legacy-prop-deps
+to install packages: npm install --legacy-peer-deps
 
 # **Spotify Tracker**
 
