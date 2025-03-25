@@ -61,3 +61,12 @@ to install packages: npm install --legacy-peer-deps
 - Develop recommendation engine
 - Implement user preference analysis
 - Create feedback loop for recommendation improvement
+
+#### Phase 4: Monthly Recap Implementation
+- Create Monthly Recap Page
+- Persist previous month's data in DB.
+
+#### Phase 5/Final Phase: Last Revisions
+- Make sure there are no vulnerabilities.
+- Run Lighthouse Test for Web App performance.
+- Deploy Web App. 
