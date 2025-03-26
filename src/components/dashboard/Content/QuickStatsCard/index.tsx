@@ -2,10 +2,12 @@ import { Card, CardBody } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { RecentlyPlayed } from "./RecentlyPlayed";
 import { RecentlyPlayedData } from "./types";
+import {useTheme} from "next-themes";
 
 export const QuickStatsCard = () => {
   const [recentlyPlayed, setRecentlyPlayed] = useState<RecentlyPlayedData | null>(null);
   const [loading, setLoading] = useState(true);
+  const {resolvedTheme} = useTheme();
 
   useEffect(() => {
     const fetchRecentlyPlayed = async () => {
@@ -30,7 +32,11 @@ export const QuickStatsCard = () => {
   }, []);
 
   return (
-    <Card className="w-full h-full rounded-xl shadow-md bg-[#18181B] text-white">
+      <Card className={`w-full h-full rounded-xl shadow-md ${
+          resolvedTheme === 'dark'
+              ? 'bg-[#18181B] text-white'
+              : 'bg-white text-gray-800'
+      }`}>
       <CardBody className="p-5">
         <h2 className="text-xl font-bold mb-4">Quick Stats</h2>
         <RecentlyPlayed recentlyPlayed={recentlyPlayed} loading={loading} />
