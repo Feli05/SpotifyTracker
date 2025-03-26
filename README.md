@@ -39,7 +39,7 @@ to install packages: npm install --legacy-peer-deps
 ### **Development Roadmap:**
 
 #### Phase 1: UI/UX Updates
-  - Update sidebar menu structure:
+  Update sidebar menu structure:
   - New Recommendations
   - Monthly Recap
   - Top Artists
