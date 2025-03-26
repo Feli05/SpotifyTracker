@@ -17,7 +17,7 @@ export const QuickStatsCard = () => {
     const fetchQuickStats = async () => {
       try {
         setLoading(true);
-
+        
         // Fetch stats overview data
         const statsResponse = await fetch('/api/spotify/stats-overview');
         if (!statsResponse.ok) {
@@ -26,14 +26,14 @@ export const QuickStatsCard = () => {
           return;
         }
         const statsOverview = await statsResponse.json();
-
+        
         // Fetch recently played tracks
         const recentResponse = await fetch('/api/spotify/recently-played');
         if (!recentResponse.ok) {
           throw new Error('Failed to load data');
         }
         const recentlyPlayedData = await recentResponse.json();
-
+        
         // Process recently played tracks into our format
         const recentlyPlayed = recentlyPlayedData.items.map((item: any) => ({
           id: item.track.id,
@@ -43,7 +43,7 @@ export const QuickStatsCard = () => {
           playedAt: item.played_at,
           url: item.track.external_urls.spotify
         })).slice(0, 3);
-
+        
         // Fetch top genres
         const genresResponse = await fetch('/api/spotify/top-genres');
         if (!genresResponse.ok) {
@@ -65,19 +65,11 @@ export const QuickStatsCard = () => {
         setLoading(false);
       }
     };
-
+    
     fetchQuickStats();
   }, []);
 
   return (
-      <Card className={`w-full h-full rounded-xl shadow-md ${
-          resolvedTheme === 'dark'
-              ? 'bg-[#18181B] text-white'
-              : 'bg-white text-gray-800'
-      }`}>
-      <CardBody className="p-5">
-        <h2 className="text-xl font-bold mb-4">Quick Stats</h2>
-        <RecentlyPlayed recentlyPlayed={recentlyPlayed} loading={loading} />
     <Card className="w-full h-full rounded-xl shadow-xl bg-zinc-900/70 text-white border border-zinc-800/40">
       <CardBody className="p-6 flex flex-col h-full">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
@@ -90,14 +82,14 @@ export const QuickStatsCard = () => {
             <h2 className="text-2xl font-bold text-white">Quick Stats</h2>
           </div>
           <div className="mt-2 md:mt-0 bg-black/30 px-4 py-2 rounded-lg text-sm text-gray-400">
-            Here's a quick glance at your Spotify activity.
+            Here&#39;s a quick glance at your Spotify activity.
           </div>
         </div>
-
+        
         {error ? (
           <div className="bg-red-900/30 text-white rounded-lg p-5 text-center mb-4">
             <p className="mb-3">{error}</p>
-            <button
+            <button 
               onClick={() => window.location.href = '/api/spotify/connect'}
               className="px-5 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
             >
@@ -108,13 +100,13 @@ export const QuickStatsCard = () => {
           <div className="flex flex-col flex-grow">
             {/* Stats Overview */}
             <div className="mb-8">
-              <StatsOverview
-                data={statsData?.statsOverview}
-                loading={loading}
-                error={error}
+              <StatsOverview 
+                data={statsData?.statsOverview} 
+                loading={loading} 
+                error={error} 
               />
             </div>
-
+            
             {/* Two Column Layout for Recently Played and Top Genres */}
             <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 flex-grow">
               {/* Recently Played Songs */}
@@ -126,14 +118,14 @@ export const QuickStatsCard = () => {
                   <h3 className="text-lg font-semibold text-white">Recently Played</h3>
                 </div>
                 <div className="flex-grow">
-                  <RecentlyPlayed
-                    songs={statsData?.recentlyPlayed || []}
-                    loading={loading}
-                    error={error}
+                  <RecentlyPlayed 
+                    songs={statsData?.recentlyPlayed || []} 
+                    loading={loading} 
+                    error={error} 
                   />
                 </div>
               </div>
-
+              
               {/* Top Genres */}
               <div className="flex flex-col">
                 <div className="flex items-center mb-4">
@@ -143,10 +135,10 @@ export const QuickStatsCard = () => {
                   <h3 className="text-lg font-semibold text-white">Top Genres</h3>
                 </div>
                 <div className="flex-grow">
-                  <TopGenresChart
-                    genres={statsData?.topGenres || []}
-                    loading={loading}
-                    error={error}
+                  <TopGenresChart 
+                    genres={statsData?.topGenres || []} 
+                    loading={loading} 
+                    error={error} 
                   />
                 </div>
               </div>
