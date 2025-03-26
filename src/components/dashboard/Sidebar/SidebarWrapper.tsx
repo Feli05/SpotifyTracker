@@ -7,6 +7,7 @@ import { DarkModeSwitch } from "./DarkModeSwitch";
 import { SidebarMenu } from "./SidebarMenu";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import {useTheme} from "next-themes";
 
 export const SidebarWrapper = () => {
   const pathname = usePathname();
@@ -14,6 +15,7 @@ export const SidebarWrapper = () => {
   const router = useRouter();
   const [isSpotifyConnected, setIsSpotifyConnected] = useState(false);
   const [isCheckingConnection, setIsCheckingConnection] = useState(true);
+  const {resolvedTheme} = useTheme();
 
   // Check if user is connected to Spotify
   useEffect(() => {
@@ -114,11 +116,11 @@ export const SidebarWrapper = () => {
             <div className="flex items-center gap-2 px-4 py-4 mb-6">
               <div className={`${collapsed ? "w-10 h-10" : "w-8 h-8"} flex-shrink-0`}>
                 <Image 
-                  src="/spotify_logo_dark.jpg" 
+                  src={resolvedTheme === "dark" ? "/spotify_logo_light.jpg" : "/spotify_logo_dark.jpg"}
                   alt="Spotify Logo" 
                   width={collapsed ? 40 : 32} 
                   height={collapsed ? 40 : 32}
-                  className="rounded-md object-contain" 
+                  className="rounded-md object-contain"
                 />
               </div>
               {<span className="font-bold text-xl flex-shrink-0 md:block">Spotify Tracker</span>}
