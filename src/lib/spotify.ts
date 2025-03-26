@@ -112,3 +112,19 @@ export const getCurrentlyPlaying = async (access_token: string) => {
   
   return response.json();
 };
+
+// Get recently played tracks
+export const getRecentlyPlayed = async (access_token: string) => {
+  const response = await fetch('https://api.spotify.com/v1/me/player/recently-played?limit=3', {
+    headers: {
+      'Authorization': `Bearer ${access_token}`
+    }
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Spotify API error: ${error}`);
+  }
+
+  return response.json();
+};

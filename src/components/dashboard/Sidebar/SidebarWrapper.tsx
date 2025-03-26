@@ -127,15 +127,15 @@ export const SidebarWrapper = () => {
             {/* Main Navigation */}
             <SidebarMenu title="Main">
               <SidebarItem
-                title="Home"
+                title="New Recommendations"
                 isActive={pathname === "/dashboard"}
                 href="/dashboard"
               />
               
               <SidebarItem
-                title="Now Playing"
-                isActive={pathname === "/dashboard/now-playing"}
-                href="/dashboard/now-playing"
+                title="Monthly Recap"
+                isActive={pathname === "/dashboard/monthly-recap"}
+                href="/dashboard/monthly-recap"
               />
             </SidebarMenu>
             
@@ -154,9 +154,9 @@ export const SidebarWrapper = () => {
               />
               
               <SidebarItem
-                title="Monthly Recap"
-                isActive={pathname === "/dashboard/monthly-recap"}
-                href="/dashboard/monthly-recap"
+                title="Quick Stats"
+                isActive={pathname === "/dashboard/quick-stats"}
+                href="/dashboard/quick-stats"
               />
             </SidebarMenu>
             
