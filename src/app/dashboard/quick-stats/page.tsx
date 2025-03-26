@@ -4,12 +4,12 @@ import { QuickStatsCard } from "@/components/dashboard/Content/QuickStatsCard";
 
 export default function Home() {
   return (
-    <main className="flex flex-col px-4 py-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
+    <main className="flex flex-col p-4 h-full">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
+        <div className="h-full">
           <WelcomeCard />
         </div>
-        <div>
+        <div className="h-full">
           <QuickStatsCard />
         </div>
       </div>

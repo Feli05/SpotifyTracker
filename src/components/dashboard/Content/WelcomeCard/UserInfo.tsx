@@ -20,15 +20,14 @@ export const UserInfo = ({ profile, loading, error }: UserInfoProps) => {
 
   if (loading) {
     return (
-        <div className="flex gap-5">
-          <Skeleton className="rounded-full w-40 h-40" />
-          <div className="flex-1">
-            <Skeleton className="h-9 w-3/4 rounded mb-3" />
-            <Skeleton className="h-6 w-1/2 rounded mb-3" />
-            <Skeleton className="h-6 w-2/3 rounded mb-3" />
-            <Skeleton className="h-6 w-1/3 rounded" />
-          </div>
+      <div className="flex gap-4">
+        <Skeleton className="rounded-full w-24 h-24" />
+        <div className="flex-1">
+          <Skeleton className="h-7 w-3/4 rounded mb-3" />
+          <Skeleton className="h-5 w-1/2 rounded mb-3" />
+          <Skeleton className="h-5 w-2/3 rounded" />
         </div>
+      </div>
     );
   }
 
@@ -40,11 +39,11 @@ export const UserInfo = ({ profile, loading, error }: UserInfoProps) => {
                 : 'bg-red-100 text-red-800'
         } rounded-lg flex items-center justify-center`}>
           <div className="text-center">
-            <p className="text-xl font-semibold mb-2">Connection Required</p>
-            <p>{error}</p>
+            <p className="text-lg font-semibold mb-2">Connection Required</p>
+            <p className="text-sm">{error}</p>
             <button
                 onClick={() => window.location.href = '/api/spotify/connect'}
-                className="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+                className="mt-3 px-3 py-1.5 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm"
             >
               Connect to Spotify
             </button>
@@ -60,30 +59,31 @@ export const UserInfo = ({ profile, loading, error }: UserInfoProps) => {
                 ? 'bg-gray-700 text-white'
                 : 'bg-gray-200 text-gray-800'
         } rounded-lg flex items-center justify-center`}>
-          <p>No profile data available</p>
+          <p className="text-sm">No profile data available</p>
         </div>
     );
   }
 
   return (
-      <div className="flex gap-5 items-center">
+      <div className="flex gap-5 lg:gap-6 items-center">
         {profile.images && profile.images[0] ? (
-            <div className="relative w-40 h-40 rounded-full overflow-hidden flex-shrink-0">
+            <div className="relative w-24 h-24 lg:w-30 lg:h-30 rounded-full overflow-hidden flex-shrink-0 border-2 border-zinc-700">
               <Image
                   src={profile.images[0].url}
                   alt={profile.display_name || 'Spotify User'}
                   fill
-                  sizes="160px"
+                  sizes="(min-width: 1024px) 112px, 96px"
+                  priority
                   className="object-cover"
               />
             </div>
         ) : (
-            <div className={`w-40 h-40 rounded-full ${
+            <div className={`w-24 h-24 lg:w-28 lg:h-28 rounded-full ${
                 resolvedTheme === 'dark'
                     ? 'bg-gray-700'
                     : 'bg-gray-300'
             } flex items-center justify-center flex-shrink-0`}>
-          <span className={`text-4xl font-bold ${
+          <span className={`text-2xl lg:text-3xl font-bold ${
               resolvedTheme === 'dark' ? 'text-white' : 'text-gray-700'
           }`}>
             {profile.display_name?.charAt(0).toUpperCase() || 'S'}
@@ -92,25 +92,25 @@ export const UserInfo = ({ profile, loading, error }: UserInfoProps) => {
         )}
 
         <div>
-          <h3 className={`text-3xl font-semibold mb-3 ${
+          <h3 className={`text-2xl lg:text-3xl font-semibold mb-3 lg:mb-4 ${
               resolvedTheme === 'dark' ? 'text-white' : 'text-gray-800'
           }`}>{profile.display_name || 'Spotify User'}</h3>
-          <div className="space-y-2">
-            <p className={`text-xl ${
+          <div className="space-y-2 lg:space-y-3">
+            <p className={`text-sm lg:text-base ${
                 resolvedTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>
             <span className={`font-medium ${
                 resolvedTheme === 'dark' ? 'text-white' : 'text-gray-800'
             }`}>Country:</span> {profile.country || 'Unknown'}
             </p>
-            <p className={`text-xl ${
+            <p className={`text-sm lg:text-base ${
                 resolvedTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>
             <span className={`font-medium ${
                 resolvedTheme === 'dark' ? 'text-white' : 'text-gray-800'
             }`}>Followers:</span> {profile.followers?.total.toLocaleString() || '0'}
             </p>
-            <p className={`text-xl ${
+            <p className={`text-sm lg:text-base ${
                 resolvedTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>
             <span className={`font-medium ${

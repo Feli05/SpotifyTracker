@@ -10,7 +10,10 @@ const scopes = [
   'user-read-email',
   'user-read-currently-playing',
   'user-top-read',
-  'user-read-recently-played'
+  'user-read-recently-played',
+  'user-library-read',       // For saved albums
+  'user-follow-read',        // For followed artists
+  'playlist-read-private'    // For private playlists
 ].join(' ');
 
 // Generate authorization URL
@@ -127,4 +130,99 @@ export const getRecentlyPlayed = async (access_token: string) => {
   }
 
   return response.json();
+};
+
+// Get total saved albums
+export const getSavedAlbums = async (access_token: string) => {
+  const response = await fetch('https://api.spotify.com/v1/me/albums?limit=1', {
+    headers: {
+      'Authorization': `Bearer ${access_token}`
+    }
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Spotify API error: ${error}`);
+  }
+
+  const data = await response.json();
+  return { total: data.total || 0 };
+};
+
+// Get total followed artists
+export const getFollowedArtists = async (access_token: string) => {
+  const response = await fetch('https://api.spotify.com/v1/me/following?type=artist&limit=1', {
+    headers: {
+      'Authorization': `Bearer ${access_token}`
+    }
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Spotify API error: ${error}`);
+  }
+
+  const data = await response.json();
+  // The response structure from Spotify is { artists: { items: [], total: number } }
+  return { total: data.artists?.total || 0 };
+};
+
+// Get total user playlists
+export const getUserPlaylists = async (access_token: string) => {
+  const response = await fetch('https://api.spotify.com/v1/me/playlists?limit=1', {
+    headers: {
+      'Authorization': `Bearer ${access_token}`
+    }
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Spotify API error: ${error}`);
+  }
+
+  const data = await response.json();
+  return { total: data.total || 0 };
+};
+
+// Get top genres
+export const getTopGenres = async (access_token: string) => {
+  // Get user's top artists
+  const response = await fetch('https://api.spotify.com/v1/me/top/artists?limit=20&time_range=medium_term', {
+    headers: {
+      'Authorization': `Bearer ${access_token}`
+    }
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Spotify API error: ${error}`);
+  }
+
+  const data = await response.json();
+  
+  // Count genres
+  const genreCounts: Record<string, number> = {};
+  let totalGenres = 0;
+  
+  data.items.forEach((artist: any) => {
+    artist.genres.forEach((genre: string) => {
+      if (!genreCounts[genre]) {
+        genreCounts[genre] = 0;
+      }
+      genreCounts[genre] += 1;
+      totalGenres += 1;
+    });
+  });
+  
+  // Convert to array and sort
+  const genres = Object.entries(genreCounts)
+    .map(([name, count]) => ({
+      name,
+      count,
+      percentage: Math.round((count / totalGenres) * 100)
+    }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5); // Just get top 5
+  
+  return { genres };
 };

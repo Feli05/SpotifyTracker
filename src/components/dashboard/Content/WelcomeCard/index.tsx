@@ -81,63 +81,80 @@ export const WelcomeCard = () => {
   }, []);
 
   return (
-      <Card className={`w-full h-full rounded-xl shadow-md ${
-          resolvedTheme === 'dark'
-              ? 'bg-[#18181B] text-white'
-              : 'bg-white text-gray-800'
-      }`}>
-        <CardBody className="p-4">
-          <h2 className={`text-2xl font-bold mb-4 ${
-              resolvedTheme === 'dark' ? 'text-white' : 'text-gray-800'
-          }`}>Welcome to your Spotify Dashboard!</h2>
+    <Card className="w-full h-full rounded-xl shadow-xl bg-zinc-900/70 text-white border border-zinc-800/40">
+      <CardBody className="p-6 flex flex-col h-full">
+        <div className="flex flex-row justify-between items-center mb-4">
+          <div className="flex items-center">
+            <div className="bg-green-500/10 p-2 rounded-md mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-green-400">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+              </svg>
+            </div>
+            <h2 className="text-2xl lg:text-3xl font-bold text-white">Welcome</h2>
+          </div>
+          <div className="bg-black/30 px-4 py-2 rounded-lg text-sm lg:text-base text-gray-400">
+            Spotify Dashboard
+          </div>
+        </div>
 
-          {/* User Profile Information */}
-          <UserInfo
-              profile={profile}
-              loading={loading}
-              error={error}
-          />
+        {/* User Profile Information */}
+        <UserInfo
+          profile={profile}
+          loading={loading}
+          error={error}
+        />
 
-          {!loading && !error && profile && (
-              <div className="mt-6">
-                {/* Top Items Section */}
-                <div className={`p-4 rounded-lg ${
-                    resolvedTheme === 'dark'
-                        ? 'bg-black text-white'
-                        : 'bg-gray-100 text-gray-800'
-                }`}>
-                  <h4 className="font-semibold mb-4 text-xl">Your Top Picks</h4>
-                  <TopItems
-                      topItems={topItems}
-                      loading={loadingTopItems}
-                  />
-                </div>
-
-                {/* Playlists Section */}
-                <div className="mt-5">
-                  <h4 className="font-semibold mb-4 text-xl">Your Playlists</h4>
-                  <UserPlaylists
-                      playlists={playlists}
-                      loading={loadingPlaylists}
-                  />
-                </div>
-
-                {/* Footer Link */}
-                <a
-                    href={profile.external_urls?.spotify}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`inline-block mt-3 mb-2 text-sm font-medium ${
-                        resolvedTheme === 'dark'
-                            ? 'text-green-400 hover:text-green-300'
-                            : 'text-green-600 hover:text-green-700'
-                    }`}
-                >
-                  View your Spotify profile →
-                </a>
+        {!loading && !error && profile && (
+          <div className="mt-4 flex-grow flex flex-col">
+            {/* Top Items Section */}
+            <div className="mb-3 lg:mb-4 flex-grow">
+              <div className="flex items-center mb-2 lg:mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 lg:w-6 lg:h-6 text-gray-400 mr-2">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <h3 className="text-lg lg:text-xl font-semibold text-white">Your Top Picks</h3>
               </div>
-          )}
-        </CardBody>
-      </Card>
+              <div className="lg:p-2">
+                <TopItems
+                  topItems={topItems}
+                  loading={loadingTopItems}
+                />
+              </div>
+            </div>
+
+            {/* Playlists Section */}
+            <div className="flex-grow flex flex-col">
+              <div className="flex items-center mb-2 lg:mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 lg:w-6 lg:h-6 text-gray-400 mr-2">
+                  <path d="M15 6H3v2h12V6zm0 4H3v2h12v-2zM3 16h8v-2H3v2zM17 6v8.18c-.31-.11-.65-.18-1-.18-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3V8h3V6h-5z"/>
+                </svg>
+                <h3 className="text-lg lg:text-xl font-semibold text-white">Your Playlists</h3>
+              </div>
+              <div className="bg-[#1E1E24] rounded-xl p-4 lg:p-5 flex-grow">
+                <UserPlaylists
+                  playlists={playlists}
+                  loading={loadingPlaylists}
+                />
+              </div>
+            </div>
+
+            {/* Footer Link */}
+            <div className="mt-3 flex justify-end">
+              <a
+                href={profile.external_urls?.spotify}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-green-400 hover:text-green-300 flex items-center"
+              >
+                View your Spotify profile
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3 ml-1">
+                  <path fillRule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clipRule="evenodd" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        )}
+      </CardBody>
+    </Card>
   );
 };
