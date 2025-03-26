@@ -39,12 +39,12 @@ to install packages: npm install --legacy-peer-deps
 ### **Development Roadmap:**
 
 #### Phase 1: UI/UX Updates
-~~ - Update sidebar menu structure: ~~
-~~ - New Recommendations ~~
-~~ - Monthly Recap ~~
-~~ - Top Artists ~~
-~~ - Top Tracks ~~
-~~ - Account ~~
+~~- Update sidebar menu structure:~~
+~~- New Recommendations~~
+~~- Monthly Recap~~
+~~- Top Artists~~
+~~- Top Tracks~~
+~~- Account~~
 - Implement Account page UI
 - Create Top Artists page with grid layout
 - Design Top Tracks page with table layout
