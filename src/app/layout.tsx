@@ -24,7 +24,7 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: {
   children: React.ReactNode;
 }) {
