@@ -6,16 +6,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
+/* Base layer with theme customizations */
 @layer base {
-
   *,
   ::after,
   ::before,
@@ -23,4 +15,34 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
+
+  /* Import theme variables */
+  :root {
+    --color-bg-primary: #ffffff;
+    --color-bg-primary-subtle: #f3f4f6;
+    --color-bg-secondary: #f9fafb;
+    --color-accent: #1db954;
+    --color-accent-hover: #1ed760;
+
+    --color-text-primary: #1f2937;
+    --color-text-secondary: #4b5563;
+    --color-text-muted: #6b7280;
+    --color-text-accent: #1db954;
+    --color-text-accent-hover: #1ed760;
+  }
+
+  .dark {
+    --color-bg-primary: #1E1E24;
+    --color-bg-primary-subtle: #27272E;
+    --color-bg-secondary: #18181b;
+    --color-accent: #1db954;
+    --color-accent-hover: #1ed760;
+
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #d1d5db;
+    --color-text-muted: #9ca3af;
+    --color-text-accent: #1db954;
+    --color-text-accent-hover: #1ed760;
+  }
 }
+
