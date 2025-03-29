@@ -31,7 +31,7 @@ export const TopItems = ({ topItems, loading }: TopItemsProps) => {
     return (
         <div className="grid grid-cols-1 gap-3">
             {topItems.topArtist && (
-                <div className="bg-primary rounded-lg p-3 lg:p-4 border border-gray-800/40">
+                <div className="bg-secondary rounded-lg p-3 lg:p-4 border border-gray-800/40">
                     <div className="flex items-center gap-3 mb-2">
                         <div className="relative w-16 h-16 lg:w-20 lg:h-20 rounded-full overflow-hidden flex-shrink-0">
                             {topItems.topArtist.image ? (
@@ -88,7 +88,7 @@ export const TopItems = ({ topItems, loading }: TopItemsProps) => {
             )}
 
             {topItems.topTrack && (
-                <div className="bg-primary rounded-lg p-3 lg:p-4 border border-gray-800/40">
+                <div className="bg-secondary rounded-lg p-3 lg:p-4 border border-gray-800/40">
                     <div className="flex items-center gap-3 mb-2">
                         <div className="relative w-16 h-16 lg:w-20 lg:h-20 rounded overflow-hidden flex-shrink-0">
                             {topItems.topTrack.image ? (

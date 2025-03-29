@@ -59,7 +59,7 @@ export const TopGenresChart = ({ genres, loading, error }: TopGenresChartProps) 
   ];
 
   return (
-      <div className="p-5 bg-primary rounded-xl shadow-md flex-grow">
+      <div className="p-5 bg-secondary rounded-xl shadow-md flex-grow">
         <div className="flex flex-col h-full">
           <div className="grid grid-cols-2 gap-2 mb-5">
             {sortedGenres.slice(0, 4).map((genre, index) => (

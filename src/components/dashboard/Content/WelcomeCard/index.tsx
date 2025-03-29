@@ -130,7 +130,7 @@ export const WelcomeCard = () => {
                     </svg>
                     <h3 className="text-lg lg:text-xl font-semibold text-text-primary">Your Playlists</h3>
                   </div>
-                  <div className="bg-primary-subtle rounded-xl p-4 lg:p-5 flex-grow">
+                  <div className="bg-secondary rounded-xl p-4 lg:p-5 flex-grow">
                     <UserPlaylists
                         playlists={playlists}
                         loading={loadingPlaylists}

@@ -61,7 +61,7 @@ export const RecentlyPlayed = ({ songs, loading, error }: RecentlyPlayedProps) =
   };
 
   return (
-      <div className="bg-primary rounded-xl p-5 flex-grow">
+      <div className="bg-secondary rounded-xl p-5 flex-grow">
         <div className="space-y-5">
           {songs.map((song) => (
               <a
