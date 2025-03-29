@@ -23,11 +23,7 @@ export const WelcomeCard = () => {
         const response = await fetch('/api/spotify/profile');
 
         if (!response.ok) {
-          if (response.status === 400) {
-            setError('Please connect your Spotify account first');
-          } else {
-            setError('Failed to load profile data');
-          }
+          setError('Failed to load profile data');
           return;
         }
 

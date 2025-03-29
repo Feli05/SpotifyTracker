@@ -75,7 +75,8 @@ export const SidebarWrapper = () => {
         
         if (response.ok) {
           setIsSpotifyConnected(false);
-          alert("Successfully disconnected from Spotify");
+          // Force a page refresh to update all components
+          window.location.reload();
         } else {
           throw new Error("Failed to disconnect");
         }

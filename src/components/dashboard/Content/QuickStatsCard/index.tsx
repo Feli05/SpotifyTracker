@@ -21,7 +21,7 @@ export const QuickStatsCard = () => {
         // Fetch stats overview data
         const statsResponse = await fetch('/api/spotify/stats-overview');
         if (!statsResponse.ok) {
-          setError('Failed to load stats data. Please reconnect your Spotify account.');
+          setError('Failed to load stats data');
           setLoading(false);
           return;
         }
@@ -60,7 +60,7 @@ export const QuickStatsCard = () => {
         });
       } catch (err) {
         console.error('Error fetching quick stats:', err);
-        setError('Failed to load data. Please reconnect your Spotify account.');
+        setError('Failed to load data');
       } finally {
         setLoading(false);
       }
@@ -87,14 +87,8 @@ export const QuickStatsCard = () => {
           </div>
 
           {error ? (
-              <div className="bg-red-900/30 text-text-primary rounded-lg p-5 text-center mb-4">
-                <p className="mb-3">{error}</p>
-                <button
-                    onClick={() => window.location.href = '/api/spotify/connect'}
-                    className="px-5 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
-                >
-                  Reconnect to Spotify
-                </button>
+              <div className="bg-red-900/20 text-text-primary rounded-lg p-5 text-center mb-4">
+                <p>{error}</p>
               </div>
           ) : (
               <div className="flex flex-col flex-grow">
