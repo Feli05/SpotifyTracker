@@ -16,6 +16,20 @@ export const SidebarWrapper = () => {
   const [isSpotifyConnected, setIsSpotifyConnected] = useState(false);
   const [isCheckingConnection, setIsCheckingConnection] = useState(true);
   const {resolvedTheme} = useTheme();
+  const [logoSrc, setLogoSrc] = useState("/spotify_logo_dark.jpg");
+  const [mounted, setMounted] = useState(false);
+
+  // Set mounted state to true when component mounts
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Update logo source based on theme, but only after component has mounted
+  useEffect(() => {
+    if (mounted) {
+      setLogoSrc(resolvedTheme === "dark" ? "/spotify_logo_light.jpg" : "/spotify_logo_dark.jpg");
+    }
+  }, [resolvedTheme, mounted]);
 
   // Check if user is connected to Spotify
   useEffect(() => {
@@ -97,12 +111,6 @@ export const SidebarWrapper = () => {
     }
   };
 
-  // Determine if we're in a mobile view
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-
-  const lightMode = "/spotify_logo_light.jpg";
-  const darkMode = "/spotify_logo_dark.jpg";
-
   return (
     <aside className="h-screen z-20 sticky top-0">
       {collapsed ? (
@@ -118,13 +126,15 @@ export const SidebarWrapper = () => {
             {/* Logo/App Name */}
             <div className="flex items-center gap-2 px-4 py-4 mb-6">
               <div className={`${collapsed ? "w-10 h-10" : "w-8 h-8"} flex-shrink-0`}>
-                <Image 
-                  src={resolvedTheme === "dark" ?  lightMode : darkMode}
-                  alt="Spotify Logo" 
-                  width={collapsed ? 40 : 32} 
-                  height={collapsed ? 40 : 32}
-                  className="rounded-md object-contain"
-                />
+                {mounted && (
+                  <Image 
+                    src={logoSrc}
+                    alt="Spotify Logo" 
+                    width={collapsed ? 40 : 32} 
+                    height={collapsed ? 40 : 32}
+                    className="rounded-md object-contain"
+                  />
+                )}
               </div>
               {<span className="font-bold text-xl flex-shrink-0 md:block">Spotify Tracker</span>}
             </div>
