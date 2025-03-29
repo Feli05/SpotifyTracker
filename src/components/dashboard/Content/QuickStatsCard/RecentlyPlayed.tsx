@@ -92,20 +92,18 @@ export const RecentlyPlayed = ({ songs, loading, error }: RecentlyPlayedProps) =
 
                 <div className="flex-1 p-4 flex flex-col justify-between">
                   <div>
-                    <h3 className="font-semibold text-text-primary text-base lg:text-sm truncate">{song.title}</h3>
-                    <p className="text-text-muted text-sm truncate">{song.artist}</p>
+                    <h3 className="font-semibold text-text-primary text-base lg:text-sm truncate">
+                      {song.title}
+                    </h3>
+                    <p className="text-text-muted text-sm truncate">
+                      {song.artist}
+                    </p>
                   </div>
 
-                  <div className="flex justify-between items-center mt-2">
-                    <div className="bg-primary px-3 py-1 rounded-full text-xs font-medium text-text-secondary">
+                  <div className="mt-2">
+                    <span className="bg-primary px-3 py-1 rounded-full text-xs font-medium text-text-secondary inline-block">
                       {formatPlayedAt(song.playedAt)}
-                    </div>
-                    <div className="text-accent text-sm flex items-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mr-1">
-                        <path d="M8 5.14v14l11-7-11-7z"/>
-                      </svg>
-                      Play
-                    </div>
+                    </span>
                   </div>
                 </div>
               </a>

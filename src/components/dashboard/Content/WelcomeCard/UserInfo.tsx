@@ -30,16 +30,10 @@ export const UserInfo = ({ profile, loading, error }: UserInfoProps) => {
 
   if (error) {
     return (
-        <div className="p-5 bg-red-900/50 text-text-primary rounded-lg flex items-center justify-center">
+        <div className="p-5 bg-red-900/20 text-text-primary rounded-lg flex items-center justify-center">
           <div className="text-center">
-            <p className="text-lg font-semibold mb-2">Connection Required</p>
+            <p className="text-lg font-semibold mb-2">Error</p>
             <p className="text-sm">{error}</p>
-            <button
-                onClick={() => window.location.href = '/api/spotify/connect'}
-                className="mt-3 px-3 py-1.5 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm"
-            >
-              Connect to Spotify
-            </button>
           </div>
         </div>
     );
