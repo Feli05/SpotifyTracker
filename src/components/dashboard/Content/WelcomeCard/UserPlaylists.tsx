@@ -37,7 +37,7 @@ export const UserPlaylists = ({ playlists, loading }: UserPlaylistsProps) => {
                     href={playlist.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 p-3 bg-primary-subtle rounded-lg hover:bg-primary-subtle/70 transition-colors"
+                    className="flex items-center gap-3 p-3 bg-primary-subtle rounded-lg hover:bg-secondary transition-all duration-200 border border-gray-800/40 shadow-md hover:shadow-lg" 
                 >
                     <div className="relative w-12 h-12 rounded overflow-hidden flex-shrink-0">
                         {playlist.image ? (
