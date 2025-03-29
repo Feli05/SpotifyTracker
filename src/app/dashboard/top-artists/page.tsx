@@ -1,16 +1,15 @@
 "use client";
+import { TopArtistCard } from "@/components/dashboard/Content/TopArtistCard";
 
 export default function Home() {
-  return (
-    <main className="flex flex-col px-4 py-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <h1>Top Artists</h1>
-        </div>
-        <div>
-          {/* Quick Stats will go here */}
-        </div>
-      </div>
-    </main>
-  );
+    return (
+        <main className="flex flex-col px-4 py-4">
+            <div className="full">
+                <div className="h-full">
+                    <TopArtistCard/>
+                </div>
+            </div>
+        </main>
+    );
 }
+
