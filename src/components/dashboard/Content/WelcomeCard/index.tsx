@@ -77,7 +77,7 @@ export const WelcomeCard = () => {
   }, []);
 
   return (
-      <Card className="w-full h-full rounded-xl shadow-xl shadow-primary-subtle/20 hover:shadow-2xl transition-shadow duration-300 bg-primary text-text-primary border border-primary-subtle/40">
+      <Card className="w-full h-full rounded-xl shadow-xl shadow-primary-subtle/20 hover:shadow-2xl transition-shadow duration-300 bg-primary text-text-primary border-2 border-primary-subtle/60">
         <CardBody className="p-6 flex flex-col h-full">
           <div className="flex flex-row justify-between items-center mb-4">
             <div className="flex items-center">

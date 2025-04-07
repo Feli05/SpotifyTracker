@@ -4,12 +4,9 @@ import { StatsOverview } from "./StatsOverview";
 import { RecentlyPlayed } from "./RecentlyPlayed";
 import { TopGenresChart } from "./TopGenresChart";
 import { QuickStatsData } from "./types";
-import { RecentlyPlayedData } from "./types";
-import { useTheme } from "next-themes";
 
 export const QuickStatsCard = () => {
   const [loading, setLoading] = useState(true);
-  const { resolvedTheme } = useTheme();
   const [error, setError] = useState<string | null>(null);
   const [statsData, setStatsData] = useState<QuickStatsData | null>(null);
 
@@ -70,7 +67,7 @@ export const QuickStatsCard = () => {
   }, []);
 
   return (
-      <Card className="w-full h-full rounded-xl shadow-xl shadow-primary-subtle/20 hover:shadow-2xl transition-shadow duration-300 bg-primary text-text-primary border border-primary-subtle/40">
+      <Card className="w-full h-full rounded-xl shadow-xl shadow-primary-subtle/20 hover:shadow-2xl transition-shadow duration-300 bg-primary text-text-primary border-2 border-primary-subtle/60">
         <CardBody className="p-6 flex flex-col h-full">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
             <div className="flex items-center">

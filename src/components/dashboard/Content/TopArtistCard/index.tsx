@@ -1,13 +1,12 @@
 import { Card, CardBody } from "@heroui/react";
 import { useEffect, useState } from "react";
-import { Artist, TimeRange, timeRangeOptions } from "./types";
 import { ArtistCard } from "./ArtistCard";
+import { Artist } from "./types";
 
 export const TopArtistCard = () => {
     const [mounted, setMounted] = useState(false);
     const [topArtists, setTopArtists] = useState<Artist[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         setMounted(true);
@@ -21,11 +20,7 @@ export const TopArtistCard = () => {
                 const response = await fetch('/api/spotify/top-artists');
 
                 if (!response.ok) {
-                    if (response.status === 401) {
-                        setError('Please reconnect your Spotify account');
-                    } else {
-                        setError(`Failed to fetch top artists: ${response.status}`);
-                    }
+                    console.error('Failed to fetch top artists:', response.status);
                     return;
                 }
 
@@ -33,7 +28,6 @@ export const TopArtistCard = () => {
                 setTopArtists(data.items || []);
             } catch (err) {
                 console.error('Error fetching top artists:', err);
-                setError('Failed to load top artists data');
             } finally {
                 setLoading(false);
             }
@@ -47,7 +41,7 @@ export const TopArtistCard = () => {
     }
 
     return (
-        <Card className="w-full h-full rounded-xl shadow-xl shadow-primary-subtle/20 hover:shadow-2xl transition-shadow duration-300 bg-primary text-text-primary border border-primary-subtle/40">
+        <Card className="w-full h-full rounded-xl shadow-xl shadow-primary-subtle/20 hover:shadow-2xl transition-shadow duration-300 bg-primary text-text-primary border-2 border-primary-subtle/60">
             <CardBody className="p-6 flex flex-col h-full">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
                     <div className="flex items-center">
