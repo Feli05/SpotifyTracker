@@ -11,7 +11,7 @@ module.exports = {
     ],
     theme: {
         extend: {
-            ...themeConfig.theme.extend
+            ...themeConfig.theme.extend,       
         },
     },
 
