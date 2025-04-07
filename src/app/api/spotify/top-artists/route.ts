@@ -2,30 +2,13 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextRequest, NextResponse } from 'next/server';
 import { refreshAccessToken } from '@/lib/spotify';
+import { getTopArtists } from '@/lib/spotify';
 import { CookieOptions } from '@supabase/ssr';
 
-async function getTopArtists(accessToken: string, timeRange: string, limit: number) {
-    const response = await fetch(`https://api.spotify.com/v1/me/top/artists?time_range=${timeRange}&limit=${limit}`, {
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-        }
-    });
-
-    if (!response.ok) {
-        throw new Error(`Spotify API error: ${response.status}`);
-    }
-
-    return response.json();
-}
 
 export async function GET(request: NextRequest) {
     try {
-        const url = new URL(request.url);
-        const timeRange = url.searchParams.get('time_range') || 'medium_term';
-        const limit = parseInt(url.searchParams.get('limit') || '10');
-
         const response = NextResponse.json({ success: false }, { status: 401 });
-
         const supabase = createServerClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
             process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -98,7 +81,7 @@ export async function GET(request: NextRequest) {
         }
 
         // Get top artists data
-        const topArtistsData = await getTopArtists(access_token, timeRange, limit);
+        const topArtistsData = await getTopArtists(access_token);
 
         // Return the data
         return NextResponse.json(topArtistsData);
