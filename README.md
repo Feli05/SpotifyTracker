@@ -18,7 +18,7 @@ to install packages: npm install --legacy-peer-deps
 ## **Tech Stack**
 
 - **Frontend**:  
-  - **Next.js 14** with App Router
+  - **Next.js** with App Router
   - **TypeScript** for type-safe code
   - **Tailwind CSS** for responsive UI
   - **Framer Motion** for smooth animations
@@ -38,7 +38,7 @@ to install packages: npm install --legacy-peer-deps
   - **Modular design** with separation of concerns
 
 - **Deployment**:  
-  - **Vercel** for frontend and serverless backend
+  - **Vercel** for frontend and serverless backend (not final)
   - **Supabase** for authentication and relational data
   - **MongoDB Atlas** for document-based data
 
