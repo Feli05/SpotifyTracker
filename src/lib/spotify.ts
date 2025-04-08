@@ -240,3 +240,121 @@ export async function getTopArtists(accessToken: string) {
 
   return response.json();
 }
+
+// Get top tracks from Spotify with fixed parameters
+export async function getTopTracks(accessToken: string) {
+  const response = await fetch(
+    'https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=20',
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`Spotify API error: ${response.status} - ${await response.text()}`);
+  }
+
+  const data = await response.json();
+  
+  // Transform track data
+  return {
+    items: data.items.map((track: any, index: number) => ({
+      rank: index + 1,
+      id: track.id,
+      name: track.name,
+      artist: track.artists.map((artist: any) => artist.name).join(', '),
+      album: track.album.name,
+      albumCover: track.album.images?.[0]?.url || null,
+      releaseDate: track.album.release_date || 'Unknown',
+      releaseYear: track.album.release_date ? new Date(track.album.release_date).getFullYear() : 'Unknown',
+      popularity: track.popularity || 0,
+      url: track.external_urls?.spotify || null,
+      previewUrl: track.preview_url || null
+    }))
+  };
+}
+
+// Get user playlists with fixed parameters
+export async function getUserPlaylistsDetailed(accessToken: string) {
+  const response = await fetch(
+    'https://api.spotify.com/v1/me/playlists?limit=3',
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`Spotify API error: ${response.status} - ${await response.text()}`);
+  }
+
+  const data = await response.json();
+  
+  return {
+    playlists: data.items.map((playlist: any) => ({
+      id: playlist.id,
+      name: playlist.name,
+      image: playlist.images?.[0]?.url || null,
+      url: playlist.external_urls?.spotify || null,
+      tracks: playlist.tracks?.total || 0
+    }))
+  };
+}
+
+// Get top items (artist and track) with fixed parameters
+export async function getTopItems(accessToken: string) {
+  // Fetch top artist
+  const artistResponse = await fetch(
+    'https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=1',
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    }
+  );
+  
+  // Fetch top track
+  const trackResponse = await fetch(
+    'https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=1',
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    }
+  );
+  
+  if (!artistResponse.ok || !trackResponse.ok) {
+    throw new Error(`Spotify API error: Artist status ${artistResponse.status}, Track status ${trackResponse.status}`);
+  }
+  
+  const artistData = await artistResponse.json();
+  const trackData = await trackResponse.json();
+  
+  const topArtist = artistData.items && artistData.items.length > 0 
+    ? {
+        name: artistData.items[0].name,
+        image: artistData.items[0].images?.[0]?.url || null,
+        url: artistData.items[0].external_urls?.spotify || null,
+        followers: artistData.items[0].followers?.total || 0,
+        popularity: artistData.items[0].popularity || 0
+      }
+    : null;
+  
+  const topTrack = trackData.items && trackData.items.length > 0
+    ? {
+        name: trackData.items[0].name,
+        artist: trackData.items[0].artists?.[0]?.name || 'Unknown Artist',
+        image: trackData.items[0].album?.images?.[0]?.url || null,
+        url: trackData.items[0].external_urls?.spotify || null,
+        popularity: trackData.items[0].popularity || 0
+      }
+    : null;
+  
+  return {
+    topArtist,
+    topTrack
+  };
+}

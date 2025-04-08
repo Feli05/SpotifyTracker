@@ -1,6 +1,7 @@
 import { Skeleton } from "@heroui/react";
 import { RecentlyPlayedSong } from "./types";
 import Image from "next/image";
+import { MusicNoteIcon } from "@/components/icons";
 
 interface RecentlyPlayedProps {
   songs: RecentlyPlayedSong[];
@@ -83,10 +84,10 @@ export const RecentlyPlayed = ({ songs, loading, error }: RecentlyPlayedProps) =
                       />
                     </div>
                 ) : (
-                    <div className="w-24 h-24 bg-secondary flex items-center justify-center flex-shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-text-muted">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-5.5c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/>
-                      </svg>
+                    <div className="flex items-center justify-center bg-primary-subtle/70 p-2 rounded">
+                        <div className="w-8 h-8 text-text-muted">
+                            <MusicNoteIcon />
+                        </div>
                     </div>
                 )}
 

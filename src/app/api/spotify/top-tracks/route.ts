@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextRequest, NextResponse } from 'next/server';
-import { refreshAccessToken } from '@/lib/spotify';
+import { refreshAccessToken, getTopTracks } from '@/lib/spotify';
 import { CookieOptions } from '@supabase/ssr';
 
 export async function GET(request: NextRequest) {
@@ -78,43 +78,17 @@ export async function GET(request: NextRequest) {
       }
     }
     
-    // Fetch top 20 tracks with medium_term range (approx. last 6 months)
-    const tracksResponse = await fetch(
-      'https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=20',
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`
-        }
-      }
-    );
-    
-    if (!tracksResponse.ok) {
-      console.error('Error fetching top tracks:', 
-        tracksResponse.status, await tracksResponse.text());
-      
+    try {
+      // Use the getTopTracks function
+      const tracksData = await getTopTracks(access_token);
+      return NextResponse.json({ topTracks: tracksData.items });
+    } catch (error) {
+      console.error('Error fetching top tracks:', error);
       return NextResponse.json(
         { error: 'Failed to fetch top tracks from Spotify' },
         { status: 500 }
       );
     }
-    
-    const tracksData = await tracksResponse.json();
-    
-    // Transform track data
-    const topTracks = tracksData.items.map((track: any, index: number) => ({
-      rank: index + 1,
-      id: track.id,
-      name: track.name,
-      artist: track.artists.map((artist: any) => artist.name).join(', '),
-      album: track.album.name,
-      albumCover: track.album.images?.[0]?.url || null,
-      releaseDate: track.album.release_date || 'Unknown',
-      releaseYear: track.album.release_date ? new Date(track.album.release_date).getFullYear() : 'Unknown',
-      popularity: track.popularity || 0,
-      url: track.external_urls?.spotify || null
-    }));
-    
-    return NextResponse.json({ topTracks });
     
   } catch (error) {
     console.error('Error fetching top tracks:', error);

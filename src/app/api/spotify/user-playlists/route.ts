@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextRequest, NextResponse } from 'next/server';
-import { refreshAccessToken } from '@/lib/spotify';
+import { refreshAccessToken, getUserPlaylistsDetailed } from '@/lib/spotify';
 import { CookieOptions } from '@supabase/ssr';
 
 export async function GET(request: NextRequest) {
@@ -78,37 +78,17 @@ export async function GET(request: NextRequest) {
       }
     }
     
-    // Fetch user playlists (limit to 3)
-    const playlistsResponse = await fetch(
-      'https://api.spotify.com/v1/me/playlists?limit=3',
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`
-        }
-      }
-    );
-    
-    if (!playlistsResponse.ok) {
-      console.error('Error fetching playlists:', 
-        playlistsResponse.status, await playlistsResponse.text());
-      
+    try {
+      // Use getUserPlaylistsDetailed function
+      const playlistsData = await getUserPlaylistsDetailed(access_token);
+      return NextResponse.json({ playlists: playlistsData.playlists });
+    } catch (error) {
+      console.error('Error fetching playlists:', error);
       return NextResponse.json(
         { error: 'Failed to fetch playlists from Spotify' },
         { status: 500 }
       );
     }
-    
-    const playlistsData = await playlistsResponse.json();
-    
-    const playlists = playlistsData.items.map((playlist: any) => ({
-      id: playlist.id,
-      name: playlist.name,
-      image: playlist.images?.[0]?.url || null,
-      url: playlist.external_urls?.spotify || null,
-      tracks: playlist.tracks?.total || 0
-    }));
-    
-    return NextResponse.json({ playlists });
     
   } catch (error) {
     console.error('Error fetching playlists:', error);

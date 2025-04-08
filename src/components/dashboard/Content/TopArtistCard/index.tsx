@@ -2,6 +2,7 @@ import { Card, CardBody } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { ArtistCard } from "./ArtistCard";
 import { Artist } from "./types";
+import { HomeIcon } from "@/components/icons";
 
 export const TopArtistCard = () => {
     const [mounted, setMounted] = useState(false);
@@ -46,9 +47,9 @@ export const TopArtistCard = () => {
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
                     <div className="flex items-center">
                         <div className="bg-green-500/10 p-2 rounded-md mr-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-green-400">
-                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
-                            </svg>
+                            <div className="w-6 h-6 text-green-400">
+                                <HomeIcon />
+                            </div>
                         </div>
                         <h2 className="text-2xl font-bold text-text-primary">Top Artists</h2>
                     </div>

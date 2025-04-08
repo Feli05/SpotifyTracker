@@ -1,0 +1,22 @@
+// Export all icon components
+export { AlbumIcon } from './Album';
+export { ArrowRightIcon } from './ArrowRight';
+export { ChevronRightIcon } from './ChevronRight';
+export { FeedbackIcon } from './Feedback';
+export { GithubIcon } from './Github';
+export { HomeIcon } from './Home';
+export { LockIcon } from './Lock';
+export { MusicNoteIcon } from './MusicNote';
+export { PauseIcon } from './Pause';
+export { PlayIcon } from './Play';
+export { PlaylistMusicIcon } from './PlaylistMusic';
+export { QuestionnaireIcon } from './Questionnaire';
+export { RecentlyPlayedIcon } from './RecentlyPlayed';
+export { SkipIcon } from './Skip';
+export { SpinnerIcon } from './Spinner';
+export { StarIcon } from './Star';
+export { StatsIcon } from './StatsIcon';
+export { ThumbDownIcon } from './ThumbDown';
+export { ThumbUpIcon } from './ThumbUp';
+export { TopGenresIcon } from './TopGenres';
+export { UserPlaylistsIcon } from './UserPlaylists'; 

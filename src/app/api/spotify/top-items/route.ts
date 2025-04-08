@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextRequest, NextResponse } from 'next/server';
-import { refreshAccessToken } from '@/lib/spotify';
+import { refreshAccessToken, getTopItems } from '@/lib/spotify';
 import { CookieOptions } from '@supabase/ssr';
 
 export async function GET(request: NextRequest) {
@@ -78,64 +78,17 @@ export async function GET(request: NextRequest) {
       }
     }
     
-    // Fetch top artist
-    const artistResponse = await fetch(
-      'https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=1',
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`
-        }
-      }
-    );
-    
-    // Fetch top track
-    const trackResponse = await fetch(
-      'https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=1',
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`
-        }
-      }
-    );
-    
-    if (!artistResponse.ok || !trackResponse.ok) {
-      console.error('Error fetching top items:', 
-        artistResponse.status, await artistResponse.text(),
-        trackResponse.status, await trackResponse.text());
-      
+    try {
+      // Use getTopItems function
+      const topItemsData = await getTopItems(access_token);
+      return NextResponse.json(topItemsData);
+    } catch (error) {
+      console.error('Error fetching top items:', error);
       return NextResponse.json(
         { error: 'Failed to fetch top items from Spotify' },
         { status: 500 }
       );
     }
-    
-    const artistData = await artistResponse.json();
-    const trackData = await trackResponse.json();
-    
-    const topArtist = artistData.items && artistData.items.length > 0 
-      ? {
-          name: artistData.items[0].name,
-          image: artistData.items[0].images?.[0]?.url || null,
-          url: artistData.items[0].external_urls?.spotify || null,
-          followers: artistData.items[0].followers?.total || 0,
-          popularity: artistData.items[0].popularity || 0
-        }
-      : null;
-    
-    const topTrack = trackData.items && trackData.items.length > 0
-      ? {
-          name: trackData.items[0].name,
-          artist: trackData.items[0].artists?.[0]?.name || 'Unknown Artist',
-          image: trackData.items[0].album?.images?.[0]?.url || null,
-          url: trackData.items[0].external_urls?.spotify || null,
-          popularity: trackData.items[0].popularity || 0
-        }
-      : null;
-    
-    return NextResponse.json({
-      topArtist,
-      topTrack
-    });
     
   } catch (error) {
     console.error('Error fetching top items:', error);

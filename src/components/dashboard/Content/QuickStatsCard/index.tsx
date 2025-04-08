@@ -4,6 +4,7 @@ import { StatsOverview } from "./StatsOverview";
 import { RecentlyPlayed } from "./RecentlyPlayed";
 import { TopGenresChart } from "./TopGenresChart";
 import { QuickStatsData } from "./types";
+import { StatsIcon, RecentlyPlayedIcon, TopGenresIcon } from "@/components/icons";
 
 export const QuickStatsCard = () => {
   const [loading, setLoading] = useState(true);
@@ -72,9 +73,9 @@ export const QuickStatsCard = () => {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
             <div className="flex items-center">
               <div className="bg-green-500/10 p-2 rounded-md mr-3">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-green-400">
-                  <path d="M11 7h2v10h-2V7zm4 4h2v6h-2v-6zm-8 2h2v4H7v-4zm-4 0h2v4H3v-4z"/>
-                </svg>
+                <div className="w-6 h-6 text-green-400">
+                  <StatsIcon />
+                </div>
               </div>
               <h2 className="text-2xl font-bold text-text-primary">Quick Stats</h2>
             </div>
@@ -103,9 +104,9 @@ export const QuickStatsCard = () => {
                   {/* Recently Played Songs */}
                   <div className="flex flex-col">
                     <div className="flex items-center mb-4">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-text-muted mr-2">
-                        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-                      </svg>
+                      <div className="w-5 h-5 text-text-muted mr-2">
+                        <RecentlyPlayedIcon />
+                      </div>
                       <h3 className="text-lg font-semibold text-text-primary">Recently Played</h3>
                     </div>
                     <div className="flex-grow">
@@ -120,9 +121,9 @@ export const QuickStatsCard = () => {
                   {/* Top Genres */}
                   <div className="flex flex-col">
                     <div className="flex items-center mb-4">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-text-muted mr-2">
-                        <path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 5h-3v5.5c0 1.38-1.12 2.5-2.5 2.5S10 13.88 10 12.5s1.12-2.5 2.5-2.5c.57 0 1.08.19 1.5.51V5h4v2zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6z"/>
-                      </svg>
+                      <div className="w-5 h-5 text-text-muted mr-2">
+                        <TopGenresIcon />
+                      </div>
                       <h3 className="text-lg font-semibold text-text-primary">Top Genres</h3>
                     </div>
                     <div className="flex-grow">

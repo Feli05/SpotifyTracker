@@ -89,26 +89,23 @@ export const SidebarWrapper = () => {
 
   const handleLogout = async () => {
     try {
-      console.log("Logging out...");
-      
       // Call the logout API endpoint
-      const response = await fetch("/api/logout", {
-        method: "POST",
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       });
-      
-      if (!response.ok) {
-        throw new Error("Logout failed");
+
+      if (response.ok) {
+        // Redirect to login page after successful logout
+        window.location.href = '/login';
+      } else {
+        // Show error message to user
+        console.error('Error logging out:', await response.text());
       }
-      
-      // Redirect to login page after successful logout
-      router.push("/login");
     } catch (error) {
-      console.error("Logout error:", error);
-      // Show error message to user
-      alert("Failed to log out. Please try again.");
+      console.error('Error logging out:', error);
     }
   };
 

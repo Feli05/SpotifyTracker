@@ -1,16 +1,17 @@
 "use client";
 
+import { ConnectionCheck } from "@/components/dashboard/ConnectionCheck";
+
 export default function Home() {
   return (
-    <main className="flex flex-col px-4 py-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <h1>Monthly Recap</h1>
-        </div>
-        <div>
-          {/* Quick Stats will go here */}
+    <main className="flex flex-col p-4 h-full">
+      <ConnectionCheck>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <h1>Monthly Recap</h1>
         </div>
       </div>
+    </ConnectionCheck>
     </main>
   );
 }
