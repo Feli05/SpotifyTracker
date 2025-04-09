@@ -90,7 +90,7 @@ export const SidebarWrapper = () => {
   const handleLogout = async () => {
     try {
       // Call the logout API endpoint
-      const response = await fetch('/api/auth/logout', {
+      const response = await fetch('/api/logout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
