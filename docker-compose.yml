@@ -1,0 +1,38 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${WEB_PORT}:${WEB_PORT}"
+    environment:
+      - NODE_ENV=production
+      - PORT=${WEB_PORT}
+      - MONGODB_URI=${MONGODB_URI}
+      - ML_SERVICE_URL=http://ml-service:${ML_PORT}
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
+      - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
+      - SPOTIFY_REDIRECT_URI=${SPOTIFY_REDIRECT_URI}
+    volumes:
+      - .:/app
+      - /app/.next
+      - /app/node_modules
+    restart: unless-stopped
+
+  ml-service:
+    build:
+      context: ./ml-service
+      dockerfile: Dockerfile
+    ports:
+      - "${ML_PORT}:${ML_PORT}"
+    environment:
+      - FLASK_ENV=development
+      - MODEL_PATH=/app/models/model.pkl
+      - PORT=${ML_PORT}
+      - MONGODB_URI=${MONGODB_URI}
+    volumes:
+      - ./ml-service:/app
+      - ./ml-service/models:/app/models
+    restart: unless-stopped 
