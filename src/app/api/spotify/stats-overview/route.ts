@@ -82,7 +82,6 @@ export async function GET(request: NextRequest) {
     try {
       const [albumsData, artistsData, playlistsData] = await Promise.all([
         getSavedAlbums(access_token).catch(err => {
-          console.error('Error fetching saved albums:', err);
           // Check if it's an auth scope issue
           if (err.message && err.message.includes('Insufficient client scope')) {
             throw err; // Re-throw to be caught by the outer try/catch
@@ -90,7 +89,6 @@ export async function GET(request: NextRequest) {
           return { total: 0 };
         }),
         getFollowedArtists(access_token).catch(err => {
-          console.error('Error fetching followed artists:', err);
           // Check if it's an auth scope issue
           if (err.message && err.message.includes('Insufficient client scope')) {
             throw err; // Re-throw to be caught by the outer try/catch
@@ -98,7 +96,6 @@ export async function GET(request: NextRequest) {
           return { total: 0 };
         }),
         getUserPlaylists(access_token).catch(err => {
-          console.error('Error fetching user playlists:', err);
           // Check if it's an auth scope issue
           if (err.message && err.message.includes('Insufficient client scope')) {
             throw err; // Re-throw to be caught by the outer try/catch
@@ -114,7 +111,6 @@ export async function GET(request: NextRequest) {
         totalUserPlaylists: playlistsData.total
       });
     } catch (error) {
-      console.error('Error in stats-overview API:', error);
       
       // Special handling for insufficient scope errors
       if (error instanceof Error && error.message.includes('Insufficient client scope')) {

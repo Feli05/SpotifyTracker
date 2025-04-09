@@ -70,8 +70,8 @@ export const QuestionnairePage = () => {
       // Submit answers to API
       const submitAnswers = async () => {
         try {
-          // Save questionnaire data
-          await fetch('/api/mongodb/questionnaires', {
+          // Use the main questionnaires endpoint which now handles both saving and ML processing
+          const response = await fetch('/api/mongodb/questionnaires', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -81,13 +81,23 @@ export const QuestionnairePage = () => {
             })
           });
           
-          // Simulate ML processing time
-          await new Promise(resolve => setTimeout(resolve, 10000));
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error('Failed to submit questionnaire');
+          }
           
-          // Redirect to dashboard 
+          const data = await response.json();
+          
+          if (!data.success) {
+            throw new Error('Questionnaire submission failed');
+          }
+          
+          // Show loading UI for a bit to simulate ML processing
+          await new Promise(resolve => setTimeout(resolve, 5000));
+          
+          // Redirect to dashboard
           router.push('/dashboard');
         } catch (error) {
-          console.error('Error submitting questionnaire:', error);
           alert('There was an error submitting your answers. Please try again.');
           setState(prev => ({ ...prev, isSubmitting: false }));
         }

@@ -1,20 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
-import { getSession } from "@/lib/auth";
+import { getSupabaseUser } from "@/app/api/supabase/user";
 
 // GET - Retrieve random songs from the database for rating
 export async function GET(req: NextRequest) {
   try {
-    const session = await getSession();
+    // Get authenticated user from Supabase
+    const { user, error, response } = await getSupabaseUser(req);
     
-    if (!session?.user) {
+    if (error || !user) {
       return NextResponse.json(
         { error: "Not authenticated" },
         { status: 401 }
       );
     }
     
-    const userId = session.user.id;
+    const userId = user.id;
+    
     const mongo = await clientPromise;
     const db = mongo.db("spotify_tracker");
     
@@ -61,7 +63,6 @@ export async function GET(req: NextRequest) {
     
     return NextResponse.json({ songs: songsWithUI });
   } catch (error) {
-    console.error("Error fetching random songs:", error);
     return NextResponse.json(
       { error: "Failed to fetch random songs" },
       { status: 500 }

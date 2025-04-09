@@ -1,26 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
-import { getSession } from "@/lib/auth";
+import { getSupabaseUser } from "@/app/api/supabase/user";
 
 // Define types for clarity
 type MoodType = 'energetic' | 'relaxed' | 'focused' | 'melancholic' | 'happy';
-type ActivityType = 'working' | 'exercising' | 'relaxing' | 'commuting' | 'partying';
-type TempoType = 'energetic' | 'moderate' | 'slow' | 'varied';
-type DiscoveryType = 'familiar' | 'mix' | 'discover' | 'wildcard';
+type ActivityType = 'studying' | 'working' | 'exercising' | 'relaxing' | 'partying';
+type TempoType = 'slow' | 'moderate' | 'fast';
+type DiscoveryType = 'familiar' | 'mix' | 'discover';
 
 // GET - Retrieve recommendations for a user
 export async function GET(req: NextRequest) {
   try {
-    const session = await getSession();
+    // Get authenticated user from Supabase
+    const { user, error } = await getSupabaseUser(req);
     
-    if (!session?.user) {
+    if (error || !user) {
       return NextResponse.json(
         { error: "Not authenticated" },
         { status: 401 }
       );
     }
     
-    const userId = session.user.id;
+    const userId = user.id;
     const mongo = await clientPromise;
     const db = mongo.db("spotify_tracker");
     
@@ -33,7 +34,6 @@ export async function GET(req: NextRequest) {
     
     return NextResponse.json(recommendations);
   } catch (error) {
-    console.error("Error fetching recommendations:", error);
     return NextResponse.json(
       { error: "Failed to fetch recommendations" },
       { status: 500 }
@@ -44,9 +44,10 @@ export async function GET(req: NextRequest) {
 // POST - Generate a new recommendation based on preferences and questionnaire
 export async function POST(req: NextRequest) {
   try {
-    const session = await getSession();
+    // Get authenticated user from Supabase
+    const { user, error } = await getSupabaseUser(req);
     
-    if (!session?.user) {
+    if (error || !user) {
       return NextResponse.json(
         { error: "Not authenticated" },
         { status: 401 }
@@ -66,7 +67,7 @@ export async function POST(req: NextRequest) {
       discovery: DiscoveryType 
     } = body;
     
-    const userId = session.user.id;
+    const userId = user.id;
     const mongo = await clientPromise;
     const db = mongo.db("spotify_tracker");
     
@@ -113,7 +114,6 @@ export async function POST(req: NextRequest) {
       }
     });
   } catch (error) {
-    console.error("Error generating recommendation:", error);
     return NextResponse.json(
       { error: "Failed to generate recommendation" },
       { status: 500 }
@@ -123,36 +123,13 @@ export async function POST(req: NextRequest) {
 
 // Helper functions to generate names and descriptions
 function getRecommendationName(mood: MoodType, activity: ActivityType): string {
-  const moodNames: Record<MoodType, string> = {
-    energetic: "Energizing",
-    relaxed: "Chill",
-    focused: "Focus",
-    melancholic: "Reflective",
-    happy: "Upbeat"
-  };
-  
-  const activityNames: Record<ActivityType, string> = {
-    working: "Work",
-    exercising: "Workout",
-    relaxing: "Relaxation",
-    commuting: "Commute",
-    partying: "Party"
-  };
-  
-  return `${moodNames[mood] || "Custom"} ${activityNames[activity] || "Mix"}`;
+  return `${capitalizeFirstLetter(mood)} ${capitalizeFirstLetter(activity)} Mix`;
 }
 
-function getRecommendationDescription(
-  mood: MoodType, 
-  activity: ActivityType, 
-  tempo: TempoType
-): string {
-  const tempoDescriptions: Record<TempoType, string> = {
-    energetic: "high-energy",
-    moderate: "mid-tempo",
-    slow: "downtempo",
-    varied: "dynamic"
-  };
-  
-  return `A ${tempoDescriptions[tempo] || "custom"} playlist designed for ${activity} when you're feeling ${mood}.`;
+function getRecommendationDescription(mood: MoodType, activity: ActivityType, tempo: TempoType): string {
+  return `A ${tempo} paced mix for ${activity} when you're feeling ${mood}.`;
+}
+
+function capitalizeFirstLetter(string: string): string {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 } 

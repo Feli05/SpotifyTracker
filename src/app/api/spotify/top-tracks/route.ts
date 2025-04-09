@@ -83,7 +83,6 @@ export async function GET(request: NextRequest) {
       const tracksData = await getTopTracks(access_token);
       return NextResponse.json({ topTracks: tracksData.items });
     } catch (error) {
-      console.error('Error fetching top tracks:', error);
       return NextResponse.json(
         { error: 'Failed to fetch top tracks from Spotify' },
         { status: 500 }
@@ -91,7 +90,6 @@ export async function GET(request: NextRequest) {
     }
     
   } catch (error) {
-    console.error('Error fetching top tracks:', error);
     return NextResponse.json({ 
       error: 'Internal server error', 
       details: error instanceof Error ? error.message : String(error) 

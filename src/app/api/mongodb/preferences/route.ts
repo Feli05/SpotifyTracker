@@ -1,20 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
-import { getSession } from "@/lib/auth";
+import { getSupabaseUser } from "@/app/api/supabase/user";
 
 // GET - Retrieve preference count for a user
 export async function GET(req: NextRequest) {
   try {
-    const session = await getSession();
+    // Get authenticated user from Supabase
+    const { user, error, response } = await getSupabaseUser(req);
     
-    if (!session?.user) {
+    if (error || !user) {
       return NextResponse.json(
         { error: "Not authenticated" },
         { status: 401 }
       );
     }
     
-    const userId = session.user.id;
+    const userId = user.id;
+    
     const mongo = await clientPromise;
     const db = mongo.db("spotify_tracker");
     
@@ -25,7 +27,6 @@ export async function GET(req: NextRequest) {
     
     return NextResponse.json({ count: preferenceCount });
   } catch (error) {
-    console.error("Error fetching preferences count:", error);
     return NextResponse.json(
       { error: "Failed to fetch preferences count" },
       { status: 500 }
@@ -36,9 +37,10 @@ export async function GET(req: NextRequest) {
 // POST - Save a new song preference
 export async function POST(req: NextRequest) {
   try {
-    const session = await getSession();
+    // Get authenticated user from Supabase
+    const { user, error, response } = await getSupabaseUser(req);
     
-    if (!session?.user) {
+    if (error || !user) {
       return NextResponse.json(
         { error: "Not authenticated" },
         { status: 401 }
@@ -55,17 +57,20 @@ export async function POST(req: NextRequest) {
       );
     }
     
-    const userId = session.user.id;
+    const userId = user.id;
+    
     const mongo = await clientPromise;
     const db = mongo.db("spotify_tracker");
     
     // Insert the preference
-    const result = await db.collection("preferences").insertOne({
+    const preference = {
       userId,
       songId,
       liked,
       timestamp: new Date()
-    });
+    };
+    
+    const result = await db.collection("preferences").insertOne(preference);
     
     // Get the total count
     const preferenceCount = await db
@@ -78,7 +83,6 @@ export async function POST(req: NextRequest) {
       preferenceId: result.insertedId
     });
   } catch (error) {
-    console.error("Error saving preference:", error);
     return NextResponse.json(
       { error: "Failed to save preference" },
       { status: 500 }

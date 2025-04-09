@@ -73,7 +73,6 @@ export async function GET(request: NextRequest) {
       }, { onConflict: 'user_id' });
     
     if (insertError) {
-      console.error('Error storing tokens:', insertError);
       return NextResponse.redirect(
         new URL('/dashboard?error=Failed to store tokens', request.url)
       );
@@ -84,7 +83,6 @@ export async function GET(request: NextRequest) {
       new URL('/dashboard?success=Connected to Spotify', request.url)
     );
   } catch (error) {
-    console.error('Unexpected error:', error);
     return NextResponse.redirect(
       new URL('/dashboard?error=Unexpected error occurred', request.url)
     );

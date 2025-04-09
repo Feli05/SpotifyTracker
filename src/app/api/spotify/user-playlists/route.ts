@@ -83,7 +83,6 @@ export async function GET(request: NextRequest) {
       const playlistsData = await getUserPlaylistsDetailed(access_token);
       return NextResponse.json({ playlists: playlistsData.playlists });
     } catch (error) {
-      console.error('Error fetching playlists:', error);
       return NextResponse.json(
         { error: 'Failed to fetch playlists from Spotify' },
         { status: 500 }
@@ -91,7 +90,6 @@ export async function GET(request: NextRequest) {
     }
     
   } catch (error) {
-    console.error('Error fetching playlists:', error);
     return NextResponse.json({ 
       error: 'Internal server error', 
       details: error instanceof Error ? error.message : String(error) 
