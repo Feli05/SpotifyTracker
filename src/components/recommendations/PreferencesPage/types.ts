@@ -4,8 +4,6 @@ export interface Song {
   artist: string;
   album: string;
   coverUrl: string;
-  dominantColor: string;
-  secondaryColor?: string;
   year: number;
 }
 

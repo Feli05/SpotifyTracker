@@ -149,10 +149,10 @@ This script imports the top 500 songs from 30 major Spotify genres into your Mon
 ### 🔄 Phase 4: ML/RL Integration
 - [x] User preference data collection
 - [x] Questionnaire answer storage
-- [ ] Build external Python-based ML service
-  - [ ] Implement Flask RESTless API
+- [x] Build external Python-based ML service
+  - [x] Implement Flask RESTless API
   - [ ] Design hybrid approach (supervised + unsupervised)
-  - [ ] Create containerized deployment
+  - [x] Create containerized deployment
   - [ ] Develop feature importance analysis
 - [ ] Model training pipeline
 - [ ] Real-time recommendation updates
