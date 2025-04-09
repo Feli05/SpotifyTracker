@@ -177,10 +177,6 @@ The application will be available at [http://localhost:3000](http://localhost:30
   - Batch import top tracks from major Spotify genres (500 songs per genre)
   - Store audio features and analysis data for ML processing
   - Create API endpoint to search the local song database
-- ✅ **Implement dynamic visual components**
-  - Add particle animation system for enhanced UI
-  - Create reusable animation components
-  - Optimize performance for smooth transitions
 - 🔄 Create song preview functionality with audio snippets
 - 🔄 Build batch processing system for preference analysis
 
@@ -189,6 +185,11 @@ The application will be available at [http://localhost:3000](http://localhost:30
 - Create feature extraction from song audio characteristics
 - Implement user preference weighting system
 - Set up model training pipeline using user feedback
+- **Build external Python-based ML service**
+  - Implement Flask RESTless API for machine learning operations
+  - Design hybrid approach combining supervised and unsupervised learning
+  - Create containerized deployment for scalable ML processing
+  - Develop feature importance analysis for explainable recommendations
 
 ### 🔜 Phase 5: Advanced Features
 - Create personalized monthly recap
