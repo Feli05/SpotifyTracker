@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import { SongCard } from "./SongCard";
 import { RatingButtons } from "./RatingButtons";
 import { HeaderSection } from "./HeaderSection";
-import { mockSongs } from "./mockData";
-import { Preference, PreferencesPageState } from "./types";
+import { Preference, PreferencesPageState, Song } from "./types";
+import { getColorsForGenre, generateGradient } from "./colorExtractor";
 
 export const PreferencesPage = () => {
   const router = useRouter();
@@ -13,7 +13,7 @@ export const PreferencesPage = () => {
   
   const [state, setState] = useState<PreferencesPageState>({
     mounted: false,
-    songs: mockSongs,
+    songs: [],
     currentSongIndex: 0,
     direction: 0,
     preferenceCount: 0
@@ -22,31 +22,63 @@ export const PreferencesPage = () => {
   const { mounted, songs, currentSongIndex, direction, preferenceCount } = state;
   const currentSong = songs[currentSongIndex];
   
+  // Shared function to fetch and format songs
+  const fetchSongs = async (): Promise<Song[]> => {
+    try {
+      const songsResponse = await fetch('/api/mongodb/songs/random');
+      const songsData = await songsResponse.json();
+      
+      // Transform MongoDB songs to match the Song interface and assign colors
+      const formattedSongs: Song[] = songsData.songs?.map((song: any, index: number) => {
+        // Get colors based on the song's genre
+        const colors = getColorsForGenre(song.genre, index);
+        
+        return {
+          id: song.id,
+          name: song.name,
+          artist: song.artists?.map((a: any) => a.name).join(', ') || 'Unknown Artist',
+          album: song.album?.name || 'Unknown Album',
+          coverUrl: song.album?.images?.[0]?.url || 'https://via.placeholder.com/300',
+          dominantColor: colors.dominantColor,
+          secondaryColor: colors.secondaryColor,
+          year: new Date(song.album?.releaseDate || '2020').getFullYear()
+        };
+      }) || [];
+      
+      return formattedSongs;
+    } catch (error) {
+      console.error('Error fetching songs:', error);
+      return [];
+    }
+  };
+  
   // Init and fetch data
   useEffect(() => {
-    const fetchPreferences = async () => {
+    const fetchData = async () => {
       try {
-        // API call to get preferences count
-        const response = await fetch('/api/mongodb/preferences');
-        const data = await response.json();
+        // Fetch preference count
+        const prefResponse = await fetch('/api/mongodb/preferences');
+        const prefData = await prefResponse.json();
+        
+        // Fetch songs using the shared function
+        const formattedSongs = await fetchSongs();
         
         setState(prev => ({
           ...prev,
           mounted: true,
-          preferenceCount: data.count || 0
+          preferenceCount: prefData.count || 0,
+          songs: formattedSongs
         }));
       } catch (error) {
-        console.error('Error fetching preferences:', error);
-        
+        console.error('Error fetching data:', error);
         setState(prev => ({
           ...prev,
-          mounted: true,
-          preferenceCount: 0
+          mounted: true
         }));
       }
     };
     
-    fetchPreferences();
+    fetchData();
   }, []);
   
   const handleSwipe = (dir: number) => {
@@ -58,12 +90,35 @@ export const PreferencesPage = () => {
       savePreference(dir > 0);
     }
     
-    // Move to next song or redirect if done
+    // Move to next song or fetch more if needed
     if (currentSongIndex < songs.length - 1) {
       setState(prev => ({ ...prev, currentSongIndex: prev.currentSongIndex + 1 }));
     } else {
-      // Redirect when out of songs
-      router.push('/recommendations');
+      // Fetch more songs instead of redirecting
+      fetchMoreSongs();
+    }
+  };
+  
+  const fetchMoreSongs = async () => {
+    try {
+      // Show loading state
+      setState(prev => ({ ...prev, mounted: false }));
+      
+      // Fetch songs using the shared function
+      const formattedSongs = await fetchSongs();
+      
+      setState(prev => ({
+        ...prev,
+        mounted: true,
+        songs: [...formattedSongs],
+        currentSongIndex: 0
+      }));
+    } catch (error) {
+      console.error('Error fetching more songs:', error);
+      setState(prev => ({
+        ...prev,
+        mounted: true
+      }));
     }
   };
   
@@ -97,10 +152,13 @@ export const PreferencesPage = () => {
     return <div className="w-full h-full rounded-xl animate-pulse bg-primary-subtle"></div>;
   }
 
-  // Background style using album cover as gradient
+  // Create background gradient style
   const backgroundStyle = {
-    background: `linear-gradient(to bottom, ${currentSong.dominantColor}55, var(--color-bg-primary) 70%)`,
-    transition: 'background 0.5s ease-in-out',
+    background: generateGradient({
+      dominantColor: currentSong.dominantColor,
+      secondaryColor: currentSong.secondaryColor || currentSong.dominantColor
+    }),
+    transition: 'background 0.8s ease-in-out'
   };
 
   return (

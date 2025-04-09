@@ -104,6 +104,7 @@ export const SongCard = ({
               src={song.coverUrl}
               alt={`${song.name} album art`}
               fill
+              sizes="(max-width: 768px) 100vw, 448px"
               className="object-cover opacity-40 blur-sm scale-110"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-secondary/70 to-secondary"></div>
@@ -115,6 +116,8 @@ export const SongCard = ({
                 src={song.coverUrl}
                 alt={`${song.name} album art`}
                 fill
+                priority
+                sizes="(max-width: 768px) 100vw, 500px"
                 className="object-cover"
               />
             </div>

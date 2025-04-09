@@ -5,6 +5,7 @@ export interface Song {
   album: string;
   coverUrl: string;
   dominantColor: string;
+  secondaryColor?: string;
   year: number;
 }
 
