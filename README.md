@@ -122,7 +122,6 @@ This script imports the top 500 songs from 30 major Spotify genres into your Mon
 5. User answers questions about their **current mood and activity**
 6. **ML model** analyzes preferences and questionnaire responses
 7. **Personalized recommendations** are generated and displayed
-8. User can **save recommendations** to their Spotify account
 
 ## **Development Roadmap**
 
@@ -163,29 +162,6 @@ This script imports the top 500 songs from 30 major Spotify genres into your Mon
 - [ ] Playlist generation
 - [ ] Advanced analytics
 - [ ] Mobile app
-
-## **Contributing**
-
-1. **Fork the repository**
-2. **Create your feature branch**
-
-```bash
-git checkout -b feature/amazing-feature
-```
-
-3. **Commit your changes**
-
-```bash
-git commit -m 'Add some amazing feature'
-```
-
-4. **Push to the branch**
-
-```bash
-git push origin feature/amazing-feature
-```
-
-5. **Open a Pull Request**
 
 ## **Project Structure**
 
