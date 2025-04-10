@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
     // 2. Call the ML service through our internal API
     try {
       // For server-side API routes, we need an absolute URL
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
       
       await fetch(`${baseUrl}/api/ml/process-data`, {
         method: 'POST',
