@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, memo } from 'react';
+import { useState, useRef, useCallback, memo, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, useMotionValue } from 'framer-motion';
 import { PlayIcon, PauseIcon } from '@/components/icons';
@@ -10,23 +10,80 @@ const SongCardComponent = memo(({
   onSwipe 
 }: SongCardProps) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const x = useMotionValue(0);
   
+  // Fetch preview URL when song changes
+  useEffect(() => {
+    const fetchPreview = async () => {
+      if (!song.name) return;
+      
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        // Directly call the API endpoint
+        const url = `/api/spotify-preview?song=${encodeURIComponent(song.name)}${
+          song.artist ? `&artist=${encodeURIComponent(song.artist)}` : ''
+        }`;
+        
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+          throw new Error(`Preview API error: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        
+        if (result.success && result.previews && result.previews.length > 0) {
+          setPreviewUrl(result.previews[0].previewUrl);
+        } else {
+          setError('No preview available');
+          setPreviewUrl(null);
+        }
+      } catch (err) {
+        setError('Failed to load preview');
+        setPreviewUrl(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchPreview();
+    
+    // Cleanup
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
+    };
+  }, [song.name, song.artist]);
+  
   // Handle audio playback
   const togglePlay = useCallback(() => {
-    if (audioRef.current) {
+    if (!previewUrl || !audioRef.current) return;
+    
+    try {
       if (isPlaying) {
         audioRef.current.pause();
       } else {
+        // Ensure the audio element has the current URL
+        audioRef.current.src = previewUrl;
         audioRef.current.load();
         audioRef.current.play().catch(() => {
           setIsPlaying(false);
+          setError('Failed to play audio');
         });
       }
       setIsPlaying(!isPlaying);
+    } catch (err) {
+      setIsPlaying(false);
     }
-  }, [isPlaying]);
+  }, [isPlaying, previewUrl]);
   
   // Define animation variants
   const cardVariants = {
@@ -62,11 +119,8 @@ const SongCardComponent = memo(({
         
         if (Math.abs(info.offset.x) > threshold) {
           const direction = info.offset.x > 0 ? 1 : -1;
-          // Let the card continue in the direction it was moving
-          // We don't need to animate x back to center
           onSwipe(direction); 
         } else {
-          // If below threshold, animate back to center
           x.set(0);
         }
       }}
@@ -102,28 +156,37 @@ const SongCardComponent = memo(({
               <div className="flex items-center space-x-2">
                 <button
                   onClick={togglePlay}
-                  className="p-3 rounded-full bg-primary hover:bg-primary-subtle transition-colors"
+                  disabled={!previewUrl || isLoading}
+                  className={`p-3 rounded-full transition-colors ${
+                    previewUrl ? 'bg-primary hover:bg-primary-subtle' : 'bg-gray-500 cursor-not-allowed'
+                  }`}
                   aria-label={isPlaying ? "Pause" : "Play"}
                 >
                   <div className="w-6 h-6 text-accent flex items-center justify-center">
-                    {isPlaying ? <PauseIcon /> : <PlayIcon />}
+                    {isLoading ? (
+                      <span className="animate-pulse">...</span>
+                    ) : isPlaying ? (
+                      <PauseIcon />
+                    ) : (
+                      <PlayIcon />
+                    )}
                   </div>
                 </button>
                 <div className="text-sm text-text-muted">
-                  Tap to {isPlaying ? "pause" : "play"} preview
+                  {isLoading ? 'Loading preview...' : 
+                   error ? error : 
+                   !previewUrl ? 'No preview available' : 
+                   `Tap to ${isPlaying ? "pause" : "play"} preview`}
                 </div>
               </div>
               
               {/* Audio element (hidden) */}
               <audio 
                 ref={audioRef} 
-                controls={false} 
                 onEnded={() => setIsPlaying(false)}
                 className="hidden"
                 preload="none"
-              >
-                <source src="/path/to/audio/snippet.mp3" type="audio/mpeg" />
-              </audio>
+              />
             </div>
           </div>
         </div>

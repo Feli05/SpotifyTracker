@@ -1,4 +1,5 @@
-import { URLSearchParams } from 'url';
+// import { URLSearchParams } from 'url';
+import spotifyPreviewFinder from 'spotify-preview-finder';
 
 const client_id = process.env.SPOTIFY_CLIENT_ID;
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
@@ -358,3 +359,38 @@ export async function getTopItems(accessToken: string) {
     topTrack
   };
 }
+
+// function to fetch preview URLs directly
+export const fetchSpotifyPreview = async (
+  searchQuery: string,
+  limit: number = 3
+) => {
+  try {
+    // Directly use the package on the server side
+    const result = await spotifyPreviewFinder(searchQuery, limit);
+    
+    if (result.success && result.results && result.results.length > 0) {
+      return {
+        success: true,
+        previews: result.results.map((song: any) => ({
+          name: song.name,
+          spotifyUrl: song.spotifyUrl,
+          previewUrl: song.previewUrls[0] || null
+        }))
+      };
+    }
+    
+    return {
+      success: false,
+      error: 'No preview found',
+      previews: []
+    };
+  } catch (error) {
+    console.error('Error fetching Spotify preview:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      previews: []
+    };
+  }
+};

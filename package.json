@@ -105,6 +105,7 @@
     "react": "19.0.0",
     "react-apexcharts": "^1.7.0",
     "react-dom": "19.0.0",
+    "spotify-preview-finder": "^1.1.1",
     "yup": "^1.6.1"
   },
   "devDependencies": {

@@ -81,6 +81,7 @@ This script imports the top 500 songs from 30 major Spotify genres into your Mon
 
 - **AI-powered music recommendations** using ML/RL
 - **Interactive song preference system** with swipe interface
+- **Song previews** for immediate listening before deciding preferences
 - **Personalized recommendation questionnaire** based on mood and activity
 - **Progressive unlocking system** to encourage user engagement
 - Personalized **monthly reports** (top artists, tracks, genres)
@@ -101,6 +102,7 @@ This script imports the top 500 songs from 30 major Spotify genres into your Mon
   - **MongoDB** for music preferences and recommendations storage
   - **Next.js API Routes** for serverless functionality
   - **Spotify API** for music data and integration
+  - **spotify-preview-finder** for accessing song preview URLs
 
 - **Machine Learning**:
   - Python with Flask
