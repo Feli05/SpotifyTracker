@@ -7,7 +7,6 @@ import { ObjectId } from "mongodb";
  * This includes:
  * - User preferences
  * - Questionnaires (current + history)
- * - Songs database
  */
 export async function POST(req: NextRequest) {
   try {
@@ -52,19 +51,9 @@ export async function POST(req: NextRequest) {
       .find({ userId })
       .toArray();
     
-    // 4. Get songs database (only the ones user has interacted with for now)
-    const songIds = preferences.map(pref => pref.songId);
-    const songs = await db
-      .collection("songs")
-      .find({ spotifyId: { $in: songIds } })
-      .toArray();
+    // ML service will fetch songs directly from database
     
-    // 5. Count total songs in database for statistics
-    const totalSongs = await db
-      .collection("songs")
-      .countDocuments({});
-    
-    // 6. Send data to ML service - we know this URL works
+    // 4. Send data to ML service
     const mlServiceUrl = process.env.ML_SERVICE_URL;
     
     try {
@@ -77,9 +66,7 @@ export async function POST(req: NextRequest) {
           userId,
           currentQuestionnaire: questionnaire,
           previousQuestionnaires,
-          preferences,
-          interactedSongs: songs,
-          totalSongsInDb: totalSongs
+          preferences
         })
       });
       

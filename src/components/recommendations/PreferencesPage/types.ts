@@ -7,6 +7,20 @@ export interface Song {
   year: number;
 }
 
+/**
+ * API response format for a song from the MongoDB API
+ */
+export interface ApiSong {
+  id: string;
+  name: string;
+  artists: Array<{ name: string }>;
+  album: {
+    name: string;
+    images?: Array<{ url: string }>;
+    releaseDate?: string;
+  };
+}
+
 export interface Preference {
   songId: string;
   liked: boolean;

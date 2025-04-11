@@ -93,7 +93,7 @@ export const QuestionnairePage = () => {
           }
           
           // Show loading UI for a bit to simulate ML processing
-          await new Promise(resolve => setTimeout(resolve, 5000));
+          await new Promise(resolve => setTimeout(resolve, 10000));
           
           // Redirect to dashboard
           router.push('/dashboard');

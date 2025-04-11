@@ -1,7 +1,9 @@
 // Export all icon components
 export { AlbumIcon } from './Album';
 export { ArrowRightIcon } from './ArrowRight';
+export { ChevronDownIcon } from './ChevronDown';
 export { ChevronRightIcon } from './ChevronRight';
+export { ChevronUpIcon } from './ChevronUp';
 export { FeedbackIcon } from './Feedback';
 export { GithubIcon } from './Github';
 export { HomeIcon } from './Home';
