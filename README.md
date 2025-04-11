@@ -148,22 +148,28 @@ This script imports the top 500 songs from 30 major Spotify genres into your Mon
   - [x] Reusable animation components
   - [x] Performance optimizations
 
-### 🔄 Phase 4: ML/RL Integration
+### ✅ Phase 4: ML/RL Integration
 - [x] User preference data collection
 - [x] Questionnaire answer storage
 - [x] Build external Python-based ML service
   - [x] Implement Flask RESTless API
-  - [ ] Design hybrid approach (supervised + unsupervised)
+  - [x] Design hybrid approach (supervised + unsupervised)
   - [x] Create containerized deployment
-  - [ ] Develop feature importance analysis
-- [ ] Model training pipeline
-- [ ] Real-time recommendation updates
+  - [x] Develop feature importance analysis
 
-### 🔜 Phase 5: Advanced Features
+### 🔄 Phase 5: Improve App Responsiveness Overall (Priority)
+- [ ] Improve MVC Architecure (identify where it's not being correctly applied and fix it)
+- [ ] Make sure there's no unused logic in the app
+- [ ] See if different functionalities can be refactored for better performance
+- [ ] Improve DB Query complexity, lookup times if applicable and accessing
+- [ ] Improve app UI/UX responsiveness for recommendation page/s
+- [ ] Make sure every component and page follow the same general scalable structure
+
+### 🔜 Phase 6: Advanced Features
+- [ ] Improve ML model in general
+- [ ] Improve how the user gets shown new songs in Song Preferences
 - [ ] Social features
-- [ ] Playlist generation
-- [ ] Advanced analytics
-- [ ] Mobile app
+- [ ] Playlist generation for streaming services
 
 ## **Project Structure**
 
