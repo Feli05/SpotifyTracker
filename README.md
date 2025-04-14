@@ -1,6 +1,6 @@
 # **Spotify Tracker**
 
-**Spotify Tracker** is a web app that focuses on **music recommendations** using machine learning and reinforcement learning techniques. The app provides personalized music suggestions, monthly recaps of listening habits, and detailed insights about top artists and tracks. Users can get AI-powered recommendations based on their preferences and discover new music that matches their taste.
+**Spotify Tracker** is a web app that focuses on **music recommendations** using machine learning. The app provides personalized music suggestions, monthly recaps of listening habits (feature not available yet), and detailed insights about top artists and tracks. Users can get AI-powered recommendations based on their preferences and discover new music that matches their taste.
 
 > **Note**: This project uses the [NextUI Dashboard Template](https://github.com/brandonhenness/nextui-dashboard-template) as a base for its UI components and layout, which is built on top of the [HeroUI](https://heroui.com/) React component library.
 
@@ -130,7 +130,7 @@ This script imports the top 500 songs from 30 major Spotify genres into your Mon
 ### ✅ Phase 1: Core Features
 - [x] Spotify authentication
 - [x] Basic listening history tracking
-- [x] MongoDB integration
+- [x] MongoDB/Postgre integration
 - [x] User profile management
 
 ### ✅ Phase 2: UI/UX Implementation
@@ -143,10 +143,6 @@ This script imports the top 500 songs from 30 major Spotify genres into your Mon
 - [x] Song preference collection
 - [x] Interactive questionnaire
 - [x] Basic recommendation algorithm
-- [x] Dynamic visual components
-  - [x] Particle animation system
-  - [x] Reusable animation components
-  - [x] Performance optimizations
 
 ### ✅ Phase 4: ML/RL Integration
 - [x] User preference data collection
@@ -157,7 +153,7 @@ This script imports the top 500 songs from 30 major Spotify genres into your Mon
   - [x] Create containerized deployment
   - [x] Develop feature importance analysis
 
-### 🔄 Phase 5: Improve App Responsiveness Overall (Priority)
+### 🔄 Phase 5: Improve App Responsiveness Overall (Priority)
 - [ ] Improve MVC Architecure (identify where it's not being correctly applied and fix it)
 - [ ] Make sure there's no unused logic in the app
 - [ ] See if different functionalities can be refactored for better performance
@@ -171,20 +167,31 @@ This script imports the top 500 songs from 30 major Spotify genres into your Mon
 - [ ] Social features
 - [ ] Playlist generation for streaming services
 
+### 🔜 Phase 7: Monthly Recap
+- [ ] Implement monthly listening statistics
+- [ ] Design visual reports for top artists, tracks, and genres
+- [ ] Create user-friendly data visualizations
+- [ ] Add historical data comparison features
+
 ## **Project Structure**
 
 ```
-spotify-tracker/
+SpotifyTracker/
 ├── src/                    # Frontend source code
+│   ├── app/                # Next.js App Router
 │   ├── components/         # React components
-│   ├── pages/             # Next.js pages
-│   ├── styles/            # CSS styles
-│   └── utils/             # Utility functions
-├── ml-service/            # Machine learning service
-│   ├── app.py            # Flask application
-│   ├── models/           # ML models
-│   └── requirements.txt  # Python dependencies
-├── docker-compose.yml    # Docker Compose configuration
-└── README.md            # Project documentation
+│   ├── helpers/            # Helper functions
+│   ├── lib/                # Library code and utilities
+│   ├── styles/             # CSS styles
+│   ├── config/             # Configuration files
+│   └── import-scripts/     # Scripts for data import
+├── ml-service/             # Machine learning service
+│   ├── app.py              # Flask application
+│   ├── model/              # ML functions
+│   └── requirements.txt    # Python dependencies
+├── public/                 # Static files
+├── docker-compose.yml      # Docker Compose configuration
+├── Dockerfile              # Docker configuration for web app
+└── .env                    # Environment variables
 ```
 
