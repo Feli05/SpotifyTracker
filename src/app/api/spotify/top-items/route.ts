@@ -78,16 +78,9 @@ export async function GET(request: NextRequest) {
       }
     }
     
-    try {
-      // Use getTopItems function
-      const topItemsData = await getTopItems(access_token);
-      return NextResponse.json(topItemsData);
-    } catch (error) {
-      return NextResponse.json(
-        { error: 'Failed to fetch top items from Spotify' },
-        { status: 500 }
-      );
-    }
+    // Use getTopItems function
+    const topItemsData = await getTopItems(access_token);
+    return NextResponse.json(topItemsData);
     
   } catch (error) {
     return NextResponse.json({ 

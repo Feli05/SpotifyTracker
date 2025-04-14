@@ -78,16 +78,9 @@ export async function GET(request: NextRequest) {
       }
     }
     
-    try {
-      // Use the getTopTracks function
-      const tracksData = await getTopTracks(access_token);
-      return NextResponse.json({ topTracks: tracksData.items });
-    } catch (error) {
-      return NextResponse.json(
-        { error: 'Failed to fetch top tracks from Spotify' },
-        { status: 500 }
-      );
-    }
+    // Use the getTopTracks function
+    const tracksData = await getTopTracks(access_token);
+    return NextResponse.json({ topTracks: tracksData.items });
     
   } catch (error) {
     return NextResponse.json({ 

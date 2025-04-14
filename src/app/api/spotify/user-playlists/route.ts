@@ -78,16 +78,9 @@ export async function GET(request: NextRequest) {
       }
     }
     
-    try {
-      // Use getUserPlaylistsDetailed function
-      const playlistsData = await getUserPlaylistsDetailed(access_token);
-      return NextResponse.json({ playlists: playlistsData.playlists });
-    } catch (error) {
-      return NextResponse.json(
-        { error: 'Failed to fetch playlists from Spotify' },
-        { status: 500 }
-      );
-    }
+    // Use getUserPlaylistsDetailed function
+    const playlistsData = await getUserPlaylistsDetailed(access_token);
+    return NextResponse.json({ playlists: playlistsData.playlists });
     
   } catch (error) {
     return NextResponse.json({ 

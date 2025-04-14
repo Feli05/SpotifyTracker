@@ -5,16 +5,16 @@ const client_id = process.env.SPOTIFY_CLIENT_ID;
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 const redirect_uri = process.env.SPOTIFY_REDIRECT_URI;
 
-// Scopes required for your app
+// Required scopes for the app
 const scopes = [
   'user-read-private',
   'user-read-email',
   'user-read-currently-playing',
   'user-top-read',
   'user-read-recently-played',
-  'user-library-read',       // For saved albums
-  'user-follow-read',        // For followed artists
-  'playlist-read-private'    // For private playlists
+  'user-library-read',       
+  'user-follow-read',        
+  'playlist-read-private'   
 ].join(' ');
 
 // Generate authorization URL
@@ -90,28 +90,6 @@ export const getUserProfile = async (access_token: string) => {
   if (!response.ok) {
     const error = await response.text();
     throw new Error(`Profile error: ${error}`);
-  }
-  
-  return response.json();
-};
-
-// Get current playing track
-export const getCurrentlyPlaying = async (access_token: string) => {
-  const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-    headers: {
-      'Authorization': `Bearer ${access_token}`
-    }
-  });
-  
-  // No content means nothing is playing
-  if (response.status === 204) {
-    return { is_playing: false };
-  }
-  
-  // Check for errors
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Spotify API error: ${error}`);
   }
   
   return response.json();
@@ -228,6 +206,7 @@ export const getTopGenres = async (access_token: string) => {
   return { genres };
 };
 
+// Get top artists 
 export async function getTopArtists(accessToken: string) {
   const response = await fetch(`https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=20`, {
     headers: {
@@ -242,7 +221,7 @@ export async function getTopArtists(accessToken: string) {
   return response.json();
 }
 
-// Get top tracks from Spotify with fixed parameters
+// Get top tracks 
 export async function getTopTracks(accessToken: string) {
   const response = await fetch(
     'https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=20',
@@ -277,7 +256,7 @@ export async function getTopTracks(accessToken: string) {
   };
 }
 
-// Get user playlists with fixed parameters
+// Get user playlists
 export async function getUserPlaylistsDetailed(accessToken: string) {
   const response = await fetch(
     'https://api.spotify.com/v1/me/playlists?limit=3',
@@ -305,7 +284,7 @@ export async function getUserPlaylistsDetailed(accessToken: string) {
   };
 }
 
-// Get top items (artist and track) with fixed parameters
+// Get top items 
 export async function getTopItems(accessToken: string) {
   // Fetch top artist
   const artistResponse = await fetch(

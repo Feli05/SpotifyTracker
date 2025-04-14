@@ -2,8 +2,7 @@ import { Db } from "mongodb";
 import { Song } from "./types";
 
 // Constants
-const SONGS_LIMIT = 10;  // We always fetch exactly 10 songs
-const POPULARITY_THRESHOLD = 40;  // Minimum popularity threshold
+const SONGS_LIMIT = 10;  // Fetch limit per query
 
 /**
  * Get popular songs across different genres
@@ -14,8 +13,6 @@ export async function getPopularSongsByGenre(
   excludedSongIds: string[], 
   limit: number = SONGS_LIMIT
 ): Promise<Song[]> {
-  // Instead of using distinct, we'll get genres by grouping and aggregation
-  // which is supported in API Version 1
   const genresAggregation = await db
     .collection("songs")
     .aggregate([
@@ -228,7 +225,7 @@ export async function getGenreExplorationSongs(
   // Get genres the user has already been exposed to
   const ratedGenres = [...new Set(ratedSongs.map(song => song.genre).filter(Boolean))];
   
-  // 2. Get all available genres using aggregation instead of distinct
+  // 2. Get all available genres
   const genresAggregation = await db
     .collection("songs")
     .aggregate([

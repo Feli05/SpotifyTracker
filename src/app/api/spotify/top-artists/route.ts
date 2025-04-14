@@ -1,10 +1,8 @@
-
 import { createServerClient } from '@supabase/ssr';
 import { NextRequest, NextResponse } from 'next/server';
 import { refreshAccessToken } from '@/lib/spotify';
 import { getTopArtists } from '@/lib/spotify';
 import { CookieOptions } from '@supabase/ssr';
-
 
 export async function GET(request: NextRequest) {
     try {

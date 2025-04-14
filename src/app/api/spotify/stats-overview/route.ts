@@ -81,27 +81,9 @@ export async function GET(request: NextRequest) {
     // Get stats data in parallel
     try {
       const [albumsData, artistsData, playlistsData] = await Promise.all([
-        getSavedAlbums(access_token).catch(err => {
-          // Check if it's an auth scope issue
-          if (err.message && err.message.includes('Insufficient client scope')) {
-            throw err; // Re-throw to be caught by the outer try/catch
-          }
-          return { total: 0 };
-        }),
-        getFollowedArtists(access_token).catch(err => {
-          // Check if it's an auth scope issue
-          if (err.message && err.message.includes('Insufficient client scope')) {
-            throw err; // Re-throw to be caught by the outer try/catch
-          }
-          return { total: 0 };
-        }),
-        getUserPlaylists(access_token).catch(err => {
-          // Check if it's an auth scope issue
-          if (err.message && err.message.includes('Insufficient client scope')) {
-            throw err; // Re-throw to be caught by the outer try/catch
-          }
-          return { total: 0 };
-        })
+        getSavedAlbums(access_token).catch(() => ({ total: 0 })),
+        getFollowedArtists(access_token).catch(() => ({ total: 0 })),
+        getUserPlaylists(access_token).catch(() => ({ total: 0 }))
       ]);
 
       // Return formatted stats
@@ -111,15 +93,6 @@ export async function GET(request: NextRequest) {
         totalUserPlaylists: playlistsData.total
       });
     } catch (error) {
-      
-      // Special handling for insufficient scope errors
-      if (error instanceof Error && error.message.includes('Insufficient client scope')) {
-        return NextResponse.json({ 
-          error: 'Additional permissions required', 
-          details: 'Insufficient client scope - Please reconnect your Spotify account to grant additional permissions'
-        }, { status: 403 });
-      }
-      
       return NextResponse.json({ 
         error: 'Failed to fetch stats data', 
         details: error instanceof Error ? error.message : String(error)
