@@ -46,3 +46,6 @@ next-env.d.ts
 # ml-service
 **/__pycache__/
 **/*.pyc
+
+# MongoDB Playground
+playground-1.mongodb.js

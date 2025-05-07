@@ -43,9 +43,9 @@ def health_check():
 
 @app.route('/api/process-data', methods=['POST'])
 def process_data():
-    """
+    """ 
     Receive data from the web service and process it to generate recommendations.
-    """    
+    """   
     data = request.json
     
     # Extract information for processing
