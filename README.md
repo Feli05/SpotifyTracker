@@ -195,3 +195,5 @@ SpotifyTracker/
 └── .env                    # Environment variables
 ```
 
+**For a more detailed explanation: https://deepwiki.com/Feli05/SpotifyTracker/1-overview** 
+
